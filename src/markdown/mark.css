@@ -1,4 +1,4 @@
-body{
+/* body{
     margin: 0 auto;
     font-family: "Microsoft YaHei", arial,sans-serif;
     color: #444444;
@@ -10,7 +10,7 @@ body{
         width: 748px;
         margin: 10px auto;
     }
-}
+} */
 h1, h2, h3, h4 {
     color: #111111;
     font-weight: 400;
