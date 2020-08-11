@@ -9,11 +9,12 @@ const fs = require('fs')
 vueapp.ssrRender = new Function('require', compilerSsr.compile(vueapp.template).code)(require)
 
 app.get('/', async function (req, res) {
-    const { descriptor } = compilerSfc.parse(fs.readFileSync('./App.vue', 'utf-8'))
+    const { descriptor } = compilerSfc.parse(fs.readFileSync('./HelloWorld.vue', 'utf-8'))
     console.log(descriptor.template.content)
 
     const data = () => ({
-        todos: ['吃饭', '睡觉']
+        count :0,
+        msg: 'hello ssr'
     })
 
     const render = compilerSsr.compile(descriptor.template.content).code

@@ -25,7 +25,6 @@ const createServer = (options = {
         process.stop()
         console.log('reload...page')
         socket.emit('reload', f)
-        clear()
         process.start()
     })
 
