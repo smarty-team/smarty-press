@@ -27,10 +27,10 @@
               with font-awesome or any other icon font library-->
               <li class="nav-item has-treeview menu-open">
                 <ul class="nav nav-treeview">
-                  <li class="nav-item" v-for="name in menu" v-bind:key="name">
-                    <a :href="'/' + name" class="nav-link">
+                  <li class="nav-item" v-for="item in menu" v-bind:key="item.path">
+                    <a :href="'/' + item.path" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
-                      <p>{{name}}</p>
+                      <p>{{item.name}}</p>
                     </a>
                   </li>
                 </ul>

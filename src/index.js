@@ -1,5 +1,6 @@
 const { createServer } = require('./devserver')
 const { tranHtml } = require('./markdown')
+const { withTitles } = require('./markdown/title')
 const { createMiddleware } = require('./menu')
 const path = require('path')
 const ssr = require('./ssr')
@@ -34,11 +35,11 @@ module.exports.startDev = (options = {
 
     app.use(async (ctx, next) => {
         const { request: { url, query } } = ctx
-        let markDownPath = path.extname(url) === '' ? url + '/README.md' : url
-        markDownPath = path.resolve(options.root, './' + markDownPath)
+        const resolvePath = filePath => path.resolve(options.root, './' + filePath)
+        const markDownPath = resolvePath(path.extname(url) === '' ? url + '/README.md' : url)
         // console.log('markDownPath:', markDownPath)
         const data = {
-            menu: ctx.menu,
+            menu: withTitles(ctx.menu, resolvePath),
             markdown: tranHtml(markDownPath)
         }
         ctx.body = await ssr.createRender(path.resolve(__dirname, './template/App.vue'))(data)
