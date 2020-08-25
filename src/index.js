@@ -46,7 +46,9 @@ module.exports.startDev = (options = {
     })
 
     const port = options.port ? options.port : 3000
-    app.start(port)
+    app.start(port, () => {
+        console.log('app start at ' + port)
+    })
 }
 
 
