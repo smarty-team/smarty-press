@@ -1,16 +1,14 @@
 const express = require('express')
 const app = express()
-const vueapp = require('./list')
 const Vue = require('vue') // vue@next
 const serverRenderer = require('@vue/server-renderer')
 const compilerSsr = require('@vue/compiler-ssr')
 const compilerSfc = require('@vue/compiler-sfc')
 const fs = require('fs')
-vueapp.ssrRender = new Function('require', compilerSsr.compile(vueapp.template).code)(require)
-
 app.get('/', async function (req, res) {
-    const { descriptor } = compilerSfc.parse(fs.readFileSync('./HelloWorld.vue', 'utf-8'))
-    console.log(descriptor.template.content)
+    const { descriptor } = compilerSfc.parse(fs.readFileSync(__dirname + '/HelloWorld.vue', 'utf-8'))
+    // console.log(descriptor.template.content)
+    // console.log(descriptor.script.content)
 
     const data = () => ({
         count :0,
@@ -25,8 +23,31 @@ app.get('/', async function (req, res) {
         data
     })
     let html = await serverRenderer.renderToString(vapp)
+    // html = ''
+    html = `
 
-    res.send(html)
+        <div id="app"><button @click="count++">count is: {{ count }}</button></div>
+        <script crossorigin="anonymous" integrity="sha384-By3cPqxThh0caEqh+N/Mz0GCmPpeAL1RGv5y/BcbLfgV0zdY77mQhL+SCZrKsp9m"
+  src="https://lib.baomitu.com/vue/3.0.0-beta.24/vue.global.js"></script>
+        <script> 
+            let vm = Vue.createApp({
+                name: 'HelloWorld',
+                props: {
+                  msg: String
+                },
+                data() {
+                  return {
+                    count: 5
+                  }
+                }
+              }).mount( '#app',true)
+              console.log('end')
+        </script>
+              
+    `
+
+    
+    res.end(html)
 })
 
 app.listen(9093, () => {
