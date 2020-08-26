@@ -33,6 +33,15 @@ module.exports.startDev = (options = {
         }
     })
 
+    app.use(async (ctx,next) => {
+        // 忽略favicon
+        if(ctx.url === '/favicon.ico'){
+            ctx.body = ''
+            return
+        }
+        await next()
+    })
+
     app.use(async (ctx, next) => {
         const { request: { url, query } } = ctx
         const resolvePath = filePath => path.resolve(options.root, './' + filePath)

@@ -16,5 +16,10 @@ yarn start
 yarn add vue@3.0.0-beta.10
 
 ```
-# CSS样式主题库
+# 主题库
+
+## MarkDown
 https://www.sohu.com/a/312891335_100298843
+
+## 菜单模板 
+默认采用AdminLTE 后面可以开发 自由配置功能

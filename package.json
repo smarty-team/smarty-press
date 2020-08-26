@@ -14,6 +14,7 @@
     "@vue/compiler-dom": "^3.0.0-rc.5",
     "@vue/server-renderer": "^3.0.0-rc.4",
     "chalk": "^4.1.0",
+    "cheerio": "^1.0.0-rc.3",
     "clear": "^0.1.0",
     "glob": "^7.1.6",
     "koa": "^2.12.0",
