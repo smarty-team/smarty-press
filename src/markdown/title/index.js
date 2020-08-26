@@ -35,7 +35,7 @@ function withTitle(path, resolvePath) {
   return {
     path,
     name: match ? match[1].trim() : path,
-    prefix: path.split('/').map(item => '').join('　')
+    prefix: path.replace(/\\/g, '/').split('/').map(item => '').join('　')
   }
 }
 
