@@ -13,7 +13,7 @@ function withTitle(path, resolvePath) {
     }))
   return {
     path,
-    name: match ? match[1] : path
+    name: match ? match[1].trim() : path
   }
 }
 
