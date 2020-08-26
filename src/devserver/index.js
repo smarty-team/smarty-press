@@ -35,17 +35,15 @@ const createServer = (options = {
             ctx.body = `
             <!DOCTYPE html>
           <html>
-          <body>
+            <script src="https://cdn.bootcss.com/socket.io/2.2.0/socket.io.js"></script>
+                <script>
+                var socket = io();
+                socket.on("reload", function(msg) {
+                    window.location.reload();
+                });
+                console.log('Live reload enabled.');
+            </script>
               ${ctx.body}
-              <script src="https://cdn.bootcss.com/socket.io/2.2.0/socket.io.js"></script>
-              <script>
-              var socket = io();
-              socket.on("reload", function(msg) {
-                window.location.reload();
-              });
-              console.log('Live reload enabled.');
-              </script>
-          </body>
           </html>
           `
         }

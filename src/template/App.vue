@@ -1,5 +1,6 @@
 <template>
-  <link rel="stylesheet" href="/assets/adminlte.min.css" />
+<link rel="stylesheet" href="/assets/adminlte.min.css" />
+<body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper fixed">
     <div class="main-header"></div>
     <div class="sidebar-wrapper">
@@ -64,9 +65,11 @@
         <b>Version</b> 0.0.1
       </div>
     </footer>
-    <script src="/assets/jquery.min.js"></script>
-    <script src="/assets/adminlte.min.js"></script>
   </div>
+</body>
+
+<script src="/assets/jquery.min.js"></script>
+<script src="/assets/adminlte.min.js"></script>
 </template>
 <script>
 </script>
