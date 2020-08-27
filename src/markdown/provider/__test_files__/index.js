@@ -3,13 +3,22 @@ const fs = require('fs')
 const FileNode = require('../FileNode')
 const Provider = require('../Provider')
 
-// 修改 Provider 原型，增加 获取当前 Nodes 节点中的文件 的功能
-Provider.prototype.getNodeFiles = function () {
+// 返回 FileNodes 的键
+Provider.prototype.fileNodeKeys = function () {
   const treeFlags = Provider.prototype.treeKey('')
   return Object.keys(this.nodes)
     .filter(filePath => filePath.indexOf(treeFlags) == -1)
     .sort((a, b) => a.localeCompare(b))
-    .join(', ')
+}
+
+// 获取 FileNodes 实例
+Provider.prototype.fileNodes = function () {
+  return this.fileNodeKeys().map(filePath => this.nodes[filePath])
+}
+
+// 获取当前 Nodes 节点中的文件 的功能
+Provider.prototype.getNodeFiles = function () {
+  return this.fileNodeKeys().join(', ')
 }
 
 // 解析路径
@@ -30,13 +39,21 @@ const testFile = 'test.md'
 // 测试文件内容
 const testBody = '# Test'
 
+// 写入updateTestFile
+const updateTestFile = (text) => {
+  fs.writeFileSync(resolvePath(testFile), text || testBody)
+}
+
 // 恢复test.md内容，防止之前被测试脚本改成其他内容
-fs.writeFileSync(resolvePath(testFile), testBody)
+updateTestFile()
 
 // 公共参数
 const options = {
   resolvePath
 }
+
+// 中间件结束
+const next = () => { }
 
 // 导出测试用的公共数据，欢迎补充
 module.exports = {
@@ -46,5 +63,7 @@ module.exports = {
   resolvePath: options.resolvePath,
   testFile,
   testBody,
-  openFileAsText
+  openFileAsText,
+  updateTestFile,
+  next
 }
