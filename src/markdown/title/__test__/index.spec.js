@@ -1,57 +1,76 @@
-const path = require('path')
-const { withTitle, withTitles } = require('../index')
+const {
+    Provider,
+    FileNode,
+    resolvePath,
+    testFile,
+    testBody,
+    options,
+    next,
+    updateTestFile
+} = require('../../provider/__test_files__')
+const titleMiddleware = require('../index')
 
-function resolvePath(filePath) {
-    return path.join(__dirname, filePath)
-}
-
-it('markdown 单文件标题测试', () => {
-    expect(withTitle('README.md', resolvePath).name)
-        .toBe('会了吧')
+it('单文件 直接调用测试', async () => {
+    const fileNode = new FileNode(testFile, options)
+    await titleMiddleware({
+        fileNode
+    }, next)
+    expect(fileNode.title)
+        .toBe('Test')
 })
 
-it('markdown 多文件标题测试', () => {
-    const list = [
-        'README.md',
-        'help/README.md',
-        'help/1.md'
-    ]
-    expect(withTitles(list, resolvePath).map(item => item.name).join('; '))
-        .toBe('会了吧; 会了吧使用教程; 会了吧 怎么下载')
+it('单文件 无标题测试', async () => {
+    const fileNode = new FileNode('abc/123/test.md', options)
+    await titleMiddleware({
+        fileNode
+    }, next)
+    expect(fileNode.title)
+        .toBe('abc/123/test.md')
 })
 
-it('markdown 多文件标题测试排序', () => {
-    const list = [
-        'help/1.md',
-        'help/README.md',
-        'README.md'
-    ]
-    expect(withTitles(list, resolvePath)
-        .map(item => item.name)
-        .join('; '))
-        .toBe('会了吧; 会了吧使用教程; 会了吧 怎么下载')
-})
+it('注册中间件 方式测试', async () => {
+    const provider = new Provider()
+    const testFiles = [testFile]
+    provider.resolvePath = resolvePath
 
-it('markdown 单文件标题 根目录 缩进测试', () => {
-    expect(withTitle('README.md', resolvePath).prefix)
-        .toBe('')
-})
+    provider.useMiddleware(titleMiddleware)
 
+    // 初始化
+    provider.patch(testFiles)
+    expect(provider
+        .fileNodes()
+        .map(item => item.title)
+        .join(', ')
+    ).toBe("Test")
 
-it('markdown 单文件标题 二级目录 缩进测试', () => {
-    expect(withTitle('help/README.md', resolvePath).prefix)
-        .toBe('　')
-})
+    // 增加文件
+    testFiles.push('abc/123/README.md') // 有标题文件
+    testFiles.push('abc/123/test.md') // 无标题文件
+    provider.patch(testFiles)
+    expect(provider
+        .fileNodes()
+        .map(item => item.title)
+        .join(', ')
+    ).toBe("ABC_123_README, abc/123/test.md, Test")
 
+    // 删除文件
+    testFiles.pop()
+    provider.patch(testFiles)
+    expect(provider
+        .fileNodes()
+        .map(item => item.title)
+        .join(', ')
+    ).toBe("ABC_123_README, Test")
 
-it('markdown 多文件标题 缩进测试', () => {
-    const list = [
-        'README.md',
-        'help/README.md',
-        'help/1.md'
-    ]
-    expect(withTitles(list, resolvePath)
-        .map(item => item.prefix)
-        .join('; '))
-        .toBe('; 　; 　')
+    // 文件修改
+    updateTestFile('# Hello World\nFoo Bar!')
+    provider.patch(testFiles)
+    expect(provider
+        .fileNodes()
+        .map(item => item.title)
+        .join(', ')
+    ).toBe("ABC_123_README, Hello World")
+
+    // 文件复原
+    updateTestFile()
 })
