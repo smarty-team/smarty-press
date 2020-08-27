@@ -13,12 +13,35 @@ class Provider {
         this.resolvePath = (filePath) => path.join(__dirname, filePath)
     }
 
+    toArray(formatNode, parentNode) {
+        const datas = []
+        const _nodes = parentNode || this.root
+        _nodes.children.forEach(childNode => {
+            if (childNode.isFileNode) {
+                datas.push(formatNode(childNode))
+            } else if (childNode.children && childNode.children.length > 0) {
+                datas.concat(this.toArray(formatNode, childNode))
+            }
+        })
+        return datas
+    }
+
+    getItem(filePath, formatNode) {
+        return formatNode(this.formatFilePath(filePath) in this.nodes ? this.nodes[filePath] : null)
+    }
+
+    formatFilePath(filePath) {
+        return filePath.substr(0, 1) == '/' ?
+            filePath.substr(1) :
+            filePath
+    }
+
     // patch
     async patch(filePaths) {
         const treeFlags = this.treeKey('')
         const newFiles = {}
         filePaths.forEach(filePath => {
-            newFiles[filePath] = null
+            newFiles[this.formatFilePath(filePath)] = null
         })
         Object.keys(this.nodes)
             .filter(filePath => filePath.indexOf(treeFlags) == -1)
@@ -40,7 +63,7 @@ class Provider {
     // 2、方便和 .md文件 区分
     // 3、不能影响排序
     treeKey(path) {
-        return `${path}/?`;
+        return `${path}/?`
     }
 
     //获取父节点
@@ -101,11 +124,11 @@ class Provider {
                 return await _middlewares.shift()({
                     provider: this,
                     fileNode
-                }, next);
+                }, next)
             }
-        };
-        return await next();
-    };
+        }
+        return await next()
+    }
 }
 
 module.exports = Provider
