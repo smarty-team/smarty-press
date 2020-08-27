@@ -16,7 +16,7 @@ const createServer = (options = {
     const process = ora('🚚Listen Dir : ' + path.resolve(options.watchFolder))
     socket.on('connection', function (client) {
         // console.log('网页监听....')
-        clear()
+        // clear()
         process.start()
         // clients.push(client)
     });
