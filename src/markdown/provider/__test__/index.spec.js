@@ -1,6 +1,13 @@
-const fs = require('fs')
-
-const { FileNode, Provider, options, resolvePath, testFile, testBody, openFileAsText } = require('../../provider/__test_files__')
+const {
+    FileNode,
+    Provider,
+    options,
+    resolvePath,
+    testFile,
+    testBody,
+    openFileAsText,
+    updateTestFile
+} = require('../../provider/__test_files__')
 
 it('FileNode 路径测试', () => {
     expect(new FileNode(testFile, options).realPath)
@@ -21,14 +28,14 @@ it('FileNode 文件修改测试', () => {
     expect(vFile.body).toBe(testBody)
 
     // 修改测试
-    fs.writeFileSync(vFile.realPath, newBody)
+    updateTestFile(newBody)
     expect(vFile.body).toBe(testBody) // 修改后，因为没有判断 hasChange，所以不会重新读取文件
     expect(vFile.hasChanged).toBe(true) // 监测到更新 
     expect(vFile.body).toBe(newBody) // 监测到更新 ，会自动读取文件内容
     expect(vFile.hasChanged).toBe(false) // 数据已经同步，再次监测不存在更新 
 
     // 测试完修改回来
-    fs.writeFileSync(vFile.realPath, testBody)
+    updateTestFile(testBody)
     expect(vFile.hasChanged).toBe(true) //同样会监测到更新
     expect(vFile.body).toBe(testBody) //内容也变回来了
 
@@ -144,13 +151,12 @@ it('Provider 修改文件', async () => {
     expect(vFile.body).toBe(testBody)
 
     // 修改文件
-    fs.writeFileSync(vFile.realPath, '来点广告， vscode插件 会了吧 非常好用')
+    updateTestFile('来点广告， vscode插件 会了吧 非常好用')
     await provider.updateFile(testFile)
     expect(vFile.body).toBe('来点广告， vscode插件 会了吧 非常好用')
 
     // 恢复原样
-    fs.writeFileSync(vFile.realPath, testBody)
-
+    updateTestFile(testBody)
 })
 
 it('Provider Patcher vFileNode测试', async () => {
@@ -179,13 +185,13 @@ it('Provider Patcher vFileNode测试', async () => {
     const vFile = provider.nodes[testFile]
     const newBody = '测试文件陌生单词太多，试试 会了吧！'
     expect(vFile.body).toBe(testBody) // vFile文件内容
-    fs.writeFileSync(vFile.realPath, newBody)
+    updateTestFile(newBody)
     expect(vFile.body).toBe(testBody) // patch前，没有调用 updateFile，所以内容不变
     await provider.patch(testFiles)
     expect(vFile.body).toBe(newBody) //patch后，内容被更新
 
     // 恢复原样
-    fs.writeFileSync(vFile.realPath, testBody)
+    updateTestFile(testBody)
     expect(vFile.body).toBe(newBody) // 和上面一样，patch前，内容不变
     await provider.patch(testFiles)
     expect(vFile.body).toBe(testBody) // patch后，内容恢复
