@@ -7,7 +7,7 @@ class FileNode {
     this.resolvePath = options && options.resolvePath ?
       options.resolvePath : (filePath) => path.join(__dirname, filePath)
     this.path = _path
-    this.children = []
+    this.isFileNode = true
     this.parent = null
     this.init()
   }
