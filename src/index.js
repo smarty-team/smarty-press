@@ -5,7 +5,7 @@ const path = require('path')
 const ssr = require('./ssr')
 const app = createServer()
 const fs = require('fs')
-const provider = require('./markdown/provider')
+const provider = require('./markdown')
 
 const KoaStatic = require('koa-static')
 
@@ -50,15 +50,22 @@ module.exports.startDev = (options = {
         await provider.patch(ctx.menu)
 
         const { request: { url, query } } = ctx
+        const skin = query.skin || '默认皮肤'
         const reqFile = path.extname(url) === '' ? url + '/README.md' : url
         const data = {
             menu: provider.toArray(fileNode => ({
                 path: fileNode.path,
-                title: fileNode.title || fileNode.path,
+                name: fileNode.title,
                 prefix: fileNode.prefix || ''
             })),
             markdown: provider.getItem(reqFile, fileNode => {
-                return fileNode ? tranHtml(fileNode.body) : Object.keys(provider.nodes).join('\n') + '文件不存在:' + reqFile + '\n' + provider.resolvePath(reqFile)
+                if (!fileNode) {
+                    return `<h1>文件不存在: ${reqFile}</h1>`
+                }
+                return [
+                    fileNode.html,
+                    fileNode.getTheme(skin).html
+                ].join('')
             })
         }
         ctx.body = await ssr.createRender(path.resolve(__dirname, './template/App.vue'))(data)
@@ -70,7 +77,3 @@ module.exports.startDev = (options = {
         console.log('app start at ' + port)
     })
 }
-
-
-
-
