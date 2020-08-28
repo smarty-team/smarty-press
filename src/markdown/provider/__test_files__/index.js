@@ -39,13 +39,22 @@ const testFile = 'test.md'
 // 测试文件内容
 const testBody = '# Test'
 
-// 写入updateTestFile
+// 异步写入文件
 const updateTestFile = (text) => {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve(updateTestFileSync(text))
+    }, 1)
+  })
+}
+
+// 同步写入文件
+const updateTestFileSync = (text) => {
   fs.writeFileSync(resolvePath(testFile), text || testBody)
 }
 
 // 恢复test.md内容，防止之前被测试脚本改成其他内容
-updateTestFile()
+updateTestFileSync()
 
 // 公共参数
 const options = {
