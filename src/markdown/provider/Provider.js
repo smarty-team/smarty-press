@@ -26,14 +26,16 @@ class Provider {
         return datas
     }
 
-    getItem(filePath, formatNode) {
-        return formatNode(this.formatFilePath(filePath) in this.nodes ? this.nodes[filePath] : null)
+    getItem(reqFile, formatNode) {
+        const filePath = this.formatFilePath(reqFile)
+        return formatNode(filePath in this.nodes ? this.nodes[filePath] : null)
     }
 
     formatFilePath(filePath) {
-        return filePath.substr(0, 1) == '/' ?
-            filePath.substr(1) :
-            filePath
+        const tempPath = filePath.replace(/\/\//g, '\\')
+        return tempPath.substr(0, 1) == '/' ?
+            tempPath.substr(1) :
+            tempPath
     }
 
     // patch
