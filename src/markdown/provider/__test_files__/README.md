@@ -11,6 +11,7 @@
 ```
 src
 |-- markdown/ Markdown文件相关
+|    |-- index.js  Provider定义文件，用于导出和注册中间件
 |    |-- provider  Markdown Provider
 |    |    |-- index.js  中间件在这里注册
 |    |    |-- __test_files__  测试数据
@@ -42,11 +43,13 @@ module.exports = async ({ fileNode }, next) => {
 
 ### 注册markdown中间件
 
-在 src/markdown/provider/index.js 中添加
+在 src/markdown/index.js 中添加 中间件即可，比如：title中间件
 
 ```javascript
-// src/markdown/provider/index.js
-provider.useMiddleware(require('../title')) //解析标题
+// src/markdown/index.js
+module.exports = require('./provider')(
+    require('./title'), // 解析标题
+)
 ```
 
 ### jest 测试文件
