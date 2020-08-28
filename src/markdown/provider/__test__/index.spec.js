@@ -18,7 +18,7 @@ it('FileNode 读取文件内容', () => {
     expect(new FileNode(testFile, options).body).toBe(testBody)
 })
 
-it('FileNode 文件修改测试', () => {
+it('FileNode 文件修改测试', async () => {
 
     const vFile = new FileNode(testFile, options)
     const newBody = '# Foobar'
@@ -28,45 +28,17 @@ it('FileNode 文件修改测试', () => {
     expect(vFile.body).toBe(testBody)
 
     // 修改测试
-    updateTestFile(newBody)
+    await updateTestFile(newBody)
     expect(vFile.body).toBe(testBody) // 修改后，因为没有判断 hasChange，所以不会重新读取文件
     expect(vFile.hasChanged).toBe(true) // 监测到更新 
     expect(vFile.body).toBe(newBody) // 监测到更新 ，会自动读取文件内容
     expect(vFile.hasChanged).toBe(false) // 数据已经同步，再次监测不存在更新 
 
     // 测试完修改回来
-    updateTestFile(testBody)
+    await updateTestFile(testBody)
     expect(vFile.hasChanged).toBe(true) //同样会监测到更新
     expect(vFile.body).toBe(testBody) //内容也变回来了
 
-})
-
-it('Provider 获取父节点（TreeNode）', () => {
-    const provider = new Provider()
-
-    // 没父节点的父节点不存在时，会自动创建
-    const treeNode1 = provider.getParent('abc/456/README.md')
-    const treeNode2 = provider.getParent('abc/123/README.md')
-
-    // 测试README.md排序，同级 README.md 排在最前面
-    provider.getParent('abc/README.md/README排在最前')
-
-    // 从子节点查找父级
-    expect(treeNode1.path).toBe('abc/456')
-    expect(treeNode1.parent.path).toBe('abc')
-    expect(treeNode1.parent.parent.path).toBe('')
-    expect(treeNode2.path).toBe('abc/123')
-
-    // 从根节点向下查找
-    expect(provider.root.path).toBe('')
-    expect(provider.root.children.length).toBe(1)
-    expect(provider.root.children[0].path).toBe('abc')
-    expect(provider.root.children[0].children.length).toBe(3)
-
-    // 同级别treeNode会按文件名排序：需要abc/123、abc/456在后，和插入顺序无关
-    expect(provider.root.children[0].children[0].path).toBe('abc/README.md')
-    expect(provider.root.children[0].children[1].path).toBe('abc/123')
-    expect(provider.root.children[0].children[2].path).toBe('abc/456')
 })
 
 it('Provider 获取父节点（TreeNode）', () => {
@@ -151,12 +123,13 @@ it('Provider 修改文件', async () => {
     expect(vFile.body).toBe(testBody)
 
     // 修改文件
-    updateTestFile('来点广告， vscode插件 会了吧 非常好用')
+    await updateTestFile('来点广告， vscode插件 会了吧 非常好用')
+    expect(vFile.body).toBe(testBody) // patdh之前为老内容
     await provider.updateFile(testFile)
-    expect(vFile.body).toBe('来点广告， vscode插件 会了吧 非常好用')
+    expect(vFile.body).toBe('来点广告， vscode插件 会了吧 非常好用') // patch后更新
 
     // 恢复原样
-    updateTestFile(testBody)
+    await updateTestFile(testBody)
 })
 
 it('Provider Patcher vFileNode测试', async () => {
@@ -185,14 +158,71 @@ it('Provider Patcher vFileNode测试', async () => {
     const vFile = provider.nodes[testFile]
     const newBody = '测试文件陌生单词太多，试试 会了吧！'
     expect(vFile.body).toBe(testBody) // vFile文件内容
-    updateTestFile(newBody)
+    await updateTestFile(newBody)
     expect(vFile.body).toBe(testBody) // patch前，没有调用 updateFile，所以内容不变
     await provider.patch(testFiles)
     expect(vFile.body).toBe(newBody) //patch后，内容被更新
 
     // 恢复原样
-    updateTestFile(testBody)
+    await updateTestFile(testBody)
     expect(vFile.body).toBe(newBody) // 和上面一样，patch前，内容不变
     await provider.patch(testFiles)
     expect(vFile.body).toBe(testBody) // patch后，内容恢复
+})
+
+it('Provider getItem', async () => {
+    const provider = new Provider()
+    provider.resolvePath = resolvePath
+
+    // 获取文件内容
+    const testFiles = [testFile]
+    await provider.patch(testFiles)
+    const result = provider.getItem(testFile, (fileNode) => {
+        return fileNode.body
+    })
+    expect(result).toBe(testBody)
+})
+
+it('Provider getItem with middleware', async () => {
+    const provider = new Provider()
+    provider.resolvePath = resolvePath
+
+    //添加中间件
+    provider.useMiddleware(({ fileNode }, next) => {
+        fileNode.body += '<!-- middleware -->'
+        next()
+    })
+
+    // 获取文件内容
+    const testFiles = [testFile]
+    await provider.patch(testFiles)
+    const result = provider.getItem(testFile, (fileNode) => {
+        return fileNode.body
+    })
+    expect(result).toBe(`${testBody}<!-- middleware -->`)
+})
+
+it('Provider toArray', async () => {
+    const provider = new Provider()
+    provider.resolvePath = resolvePath
+    await provider.patch([testFile, 'abc/123/README.md', 'abc/456/README.md'])
+    const result = provider.toArray(fileNode => {
+        return fileNode.path
+    }).join(', ')
+    expect(result).toBe(`abc/123/README.md, abc/456/README.md, ${testFile}`)
+})
+
+it('Provider toArray with middleware', async () => {
+    const provider = new Provider()
+    provider.resolvePath = resolvePath
+    //添加中间件
+    provider.useMiddleware(({ fileNode }, next) => {
+        fileNode.title = `<-- title:${fileNode.path} -->`
+        next()
+    })
+    await provider.patch([testFile, 'abc/123/README.md', 'abc/456/README.md'])
+    const result = provider.toArray(fileNode => {
+        return fileNode.title
+    })
+    expect(result.join(', ')).toBe(`<-- title:abc/123/README.md -->, <-- title:abc/456/README.md -->, <-- title:${testFile} -->`)
 })
