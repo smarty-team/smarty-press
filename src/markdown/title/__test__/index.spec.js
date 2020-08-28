@@ -3,7 +3,6 @@ const {
     FileNode,
     resolvePath,
     testFile,
-    testBody,
     options,
     next,
     updateTestFile
@@ -63,7 +62,7 @@ it('注册中间件 方式测试', async () => {
     ).toBe("ABC_123_README, Test")
 
     // 文件修改
-    updateTestFile('# Hello World\nFoo Bar!')
+    await updateTestFile('# Hello World\nFoo Bar!')
     provider.patch(testFiles)
     expect(provider
         .fileNodes()
@@ -72,5 +71,5 @@ it('注册中间件 方式测试', async () => {
     ).toBe("ABC_123_README, Hello World")
 
     // 文件复原
-    updateTestFile()
+    await updateTestFile()
 })
