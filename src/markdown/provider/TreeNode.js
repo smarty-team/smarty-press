@@ -26,15 +26,22 @@ class TreeNode {
   // 排序
   sort() {
     this.children.sort((aNode, bNode) => {
-      if (aNode.path.indexOf(IndexFile) != -1) {
+      const aFileName = this.getFileName(aNode)
+      const bFileName = this.getFileName(bNode)
+      if (aFileName == IndexFile) {
         //README.md放在最前面
         return -1
-      } else if (bNode.path.indexOf(IndexFile) != -1) {
+      } else if (bFileName == IndexFile) {
         return 1
       } else {
-        return aNode.path.localeCompare(bNode.path)
+        return aFileName.localeCompare(bFileName)
       }
     });
+  }
+
+  // 获取不包含路径(/)的文件名
+  getFileName(fileNode) {
+    return fileNode.path.replace(this.path, '').replace(/(\/|\\)/g, '').split(/(\/|\\)/g)[0]
   }
 }
 
