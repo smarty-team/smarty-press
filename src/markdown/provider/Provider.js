@@ -32,10 +32,7 @@ class Provider {
     }
 
     formatFilePath(filePath) {
-        const tempPath = filePath.replace(/\/\//g, '\\')
-        return tempPath.substr(0, 1) == '/' ?
-            tempPath.substr(1) :
-            tempPath
+        return filePath.replace(/\/\/*/g, '\/').replace(/^\//, '')
     }
 
     // patch
