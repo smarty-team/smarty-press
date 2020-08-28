@@ -20,7 +20,7 @@ class Provider {
             if (childNode.isFileNode) {
                 datas.push(formatNode(childNode))
             } else if (childNode.children && childNode.children.length > 0) {
-                datas.concat(this.toArray(formatNode, childNode))
+                this.toArray(formatNode, childNode).forEach(item => datas.push(item))
             }
         })
         return datas
