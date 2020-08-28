@@ -32,6 +32,7 @@ src
 
 ```javascript
 // src/markdown/title/index.js
+
 module.exports = async ({ fileNode }, next) => {
   const match = /^#\s?([^#\n\r]*)/.exec(fileNode.body)
   fileNode.title = match ? match[1].trim() : fileNode.path
@@ -68,7 +69,6 @@ const {
     FileNode,
     resolvePath,
     testFile,
-    testBody,
     options,
     next,
     updateTestFile
@@ -101,7 +101,7 @@ it('注册中间件 方式测试', async () => {
     provider.useMiddleware(titleMiddleware)
 
     // 初始化
-    provider.patch(testFiles)
+    await provider.patch(testFiles)
     expect(provider
         .fileNodes()
         .map(item => item.title)
@@ -111,7 +111,7 @@ it('注册中间件 方式测试', async () => {
     // 增加文件
     testFiles.push('abc/123/README.md') // 有标题文件
     testFiles.push('abc/123/test.md') // 无标题文件
-    provider.patch(testFiles)
+    await provider.patch(testFiles)
     expect(provider
         .fileNodes()
         .map(item => item.title)
@@ -120,7 +120,7 @@ it('注册中间件 方式测试', async () => {
 
     // 删除文件
     testFiles.pop()
-    provider.patch(testFiles)
+    await provider.patch(testFiles)
     expect(provider
         .fileNodes()
         .map(item => item.title)
@@ -128,8 +128,8 @@ it('注册中间件 方式测试', async () => {
     ).toBe("ABC_123_README, Test")
 
     // 文件修改
-    updateTestFile('# Hello World\nFoo Bar!')
-    provider.patch(testFiles)
+    await updateTestFile('# Hello World\nFoo Bar!')
+    await provider.patch(testFiles)
     expect(provider
         .fileNodes()
         .map(item => item.title)
@@ -137,8 +137,9 @@ it('注册中间件 方式测试', async () => {
     ).toBe("ABC_123_README, Hello World")
 
     // 文件复原
-    updateTestFile()
+    await updateTestFile()
 })
+
 
 ```
 
