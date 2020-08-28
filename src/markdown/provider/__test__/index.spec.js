@@ -69,7 +69,7 @@ it('Provider 获取父节点（TreeNode）', () => {
     expect(provider.root.children[0].children[2].path).toBe('abc/456')
 })
 
-it('Provider 添加文件', async () => {
+it('Provider 添加文件和排序', async () => {
     const provider = new Provider()
     provider.resolvePath = resolvePath
 
@@ -96,6 +96,24 @@ it('Provider 添加文件', async () => {
     // 自动排序测试
     expect(vFile1 === provider.root.children[1]).toBe(true) // [abc/, test.md]
     expect(vFile2.parent === vFile3.parent.parent.children[1]).toBe(true) // [abc/123/, abc/456/]
+
+    // 增加更多文件，测试排序
+    await provider.addFile('xyz/ad.md')
+    await provider.addFile('README.md')
+    await provider.addFile('abc/123/test.md')
+    await provider.addFile('abc/README.md')
+    expect(provider
+        .toArray(fileNode => fileNode.path)
+        .join(', '))
+        .toBe([
+            'README.md', //根目录参与排序结果 [README.md, abc/, test.md, xyz]
+            'abc/README.md', // abc目录参与排序结果 [abc/README.md, abc/123/, 456/]
+            'abc/123/README.md', // abc/123目录参与排序结果 [abc/123/README.md, abc/123/test.md]
+            'abc/123/test.md',
+            'abc/456/README.md',
+            'test.md',
+            'xyz/ad.md'
+        ].join(', '))
 })
 
 it('Provider 删除文件', async () => {
