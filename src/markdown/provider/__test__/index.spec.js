@@ -45,8 +45,8 @@ it('Provider 获取父节点（TreeNode）', () => {
     const provider = new Provider()
 
     // 没父节点的父节点不存在时，会自动创建
-    const treeNode1 = provider.getParent('abc/456/README.md')
-    const treeNode2 = provider.getParent('abc/123/README.md')
+    const treeNode1 = provider.getParent('abc/456/README.md') // macOS、 Linux 路径
+    const treeNode2 = provider.getParent('abc\\123\\README.md') // Window 路径 
 
     // 测试README.md排序，同级 README.md 排在最前面
     provider.getParent('abc/README.md/README排在最前')
@@ -80,13 +80,13 @@ it('Provider 添加文件和排序', async () => {
     expect(vFile1.body).toBe(testBody)
 
     // 子节点添加节点
-    await provider.addFile('abc/456/README.md')
+    await provider.addFile('abc/456/README.md')  // macOS、 Linux 路径
     const vFile2 = provider.nodes['abc/456/README.md']
     expect(vFile2.path).toBe('abc/456/README.md')
     expect(vFile2.body).toBe(openFileAsText('abc/456/README.md'))
 
     // 从根节点向下查找
-    await provider.addFile('abc/123/README.md')
+    await provider.addFile('abc\\123\\README.md') // Window 路径 
     const vFile3 = provider.root // [abc/, test.md]
         .children[0] // [abc/123/, abc/456/]
         .children[0] // [abc/123/README.md]
@@ -98,9 +98,9 @@ it('Provider 添加文件和排序', async () => {
     expect(vFile2.parent === vFile3.parent.parent.children[1]).toBe(true) // [abc/123/, abc/456/]
 
     // 增加更多文件，测试排序
-    await provider.addFile('xyz/ad.md')
-    await provider.addFile('README.md')
-    await provider.addFile('abc/123/test.md')
+    await provider.addFile('xyz/ad.md') // macOS、 Linux 路径
+    await provider.addFile('README.md') // Window 路径 
+    await provider.addFile('abc\\123\\test.md')
     await provider.addFile('abc/README.md')
     expect(provider
         .toArray(fileNode => fileNode.path)
@@ -122,8 +122,8 @@ it('Provider 删除文件', async () => {
 
     // 先添加测试文件
     await provider.addFile(testFile)
-    await provider.addFile('abc/123/README.md')
-    await provider.addFile('abc/456/README.md')
+    await provider.addFile('abc/123/README.md') // macOS、 Linux 路径
+    await provider.addFile('abc\\456\\README.md') // Window 路径 
     expect(provider.getNodeFiles()).toBe(`abc/123/README.md, abc/456/README.md, ${testFile}`)
 
     // 删除文件
@@ -162,8 +162,8 @@ it('Provider Patcher vFileNode测试', async () => {
     expect(provider.getNodeFiles()).toBe(testFile)
 
     // 模拟用户新建文件
-    testFiles.push('abc/456/README.md')
-    testFiles.push('abc/123/README.md')
+    testFiles.push('abc\\456\\README.md') // Window 路径 
+    testFiles.push('abc/123/README.md') // macOS、 Linux 路径
     await provider.patch(testFiles)
     expect(provider.getNodeFiles()).toBe(`abc/123/README.md, abc/456/README.md, ${testFile}`)
 
@@ -193,12 +193,26 @@ it('Provider getItem', async () => {
     provider.resolvePath = resolvePath
 
     // 获取文件内容
-    const testFiles = [testFile]
+    const testFiles = [
+        testFile,
+        'abc\\123\\README.md', // Window 路径
+        'abc/456/README.md' // macOS、 Linux 路径
+    ]
     await provider.patch(testFiles)
     const result = provider.getItem(testFile, (fileNode) => {
         return fileNode.body
     })
     expect(result).toBe(testBody)
+    // Window 路径
+    const result1 = provider.getItem('abc\\123\\README.md', (fileNode) => {
+        return fileNode.body
+    })
+    expect(result1).toBe(openFileAsText('abc/123/README.md'))
+    // macOS、 Linux 路径
+    const result2 = provider.getItem('abc/456/README.md', (fileNode) => {
+        return fileNode.body
+    })
+    expect(result2).toBe(openFileAsText('abc/456/README.md'))
 })
 
 it('Provider getItem with middleware', async () => {
@@ -212,18 +226,36 @@ it('Provider getItem with middleware', async () => {
     })
 
     // 获取文件内容
-    const testFiles = [testFile]
+    const testFiles = [
+        testFile,
+        'abc\\123\\README.md', // Window 路径
+        'abc/456/README.md' // macOS、 Linux 路径
+    ]
     await provider.patch(testFiles)
     const result = provider.getItem(testFile, (fileNode) => {
         return fileNode.body
     })
     expect(result).toBe(`${testBody}<!-- middleware -->`)
+    // Window 路径
+    const result1 = provider.getItem('abc\\123\\README.md', (fileNode) => {
+        return fileNode.body
+    })
+    expect(result1).toBe(`${openFileAsText('abc/123/README.md')}<!-- middleware -->`)
+    // macOS、 Linux 路径
+    const result2 = provider.getItem('abc/456/README.md', (fileNode) => {
+        return fileNode.body
+    })
+    expect(result2).toBe(`${openFileAsText('abc/456/README.md')}<!-- middleware -->`)
 })
 
 it('Provider toArray', async () => {
     const provider = new Provider()
     provider.resolvePath = resolvePath
-    await provider.patch([testFile, 'abc/123/README.md', 'abc/456/README.md'])
+    await provider.patch([
+        testFile,
+        'abc\\123\\README.md', // Window 路径
+        'abc/456/README.md' // macOS、 Linux 路径
+    ])
     const result = provider.toArray(fileNode => {
         return fileNode.path
     }).join(', ')
@@ -238,7 +270,11 @@ it('Provider toArray with middleware', async () => {
         fileNode.title = `<-- title:${fileNode.path} -->`
         next()
     })
-    await provider.patch([testFile, 'abc/123/README.md', 'abc/456/README.md'])
+    await provider.patch([
+        testFile,
+        'abc\\123\\README.md', // Window 路径
+        'abc/456/README.md' // macOS、 Linux 路径
+    ])
     const result = provider.toArray(fileNode => {
         return fileNode.title
     })

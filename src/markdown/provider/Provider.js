@@ -32,7 +32,7 @@ class Provider {
     }
 
     formatFilePath(filePath) {
-        return filePath.replace(/\/\/*/g, '\/').replace(/^\//, '')
+        return filePath.replace(/(\\\\*|\/\/*)/g, '\/').replace(/^\//, '')
     }
 
     // patch
@@ -67,7 +67,7 @@ class Provider {
 
     //获取父节点
     getParent(filePath) {
-        const filePaths = filePath.split(/\\|\//)
+        const filePaths = this.formatFilePath(filePath).split(/\//)
         filePaths.pop()
         const parentPath = filePaths.join('/')
         if (!(this.treeKey(parentPath) in this.nodes)) {
@@ -82,7 +82,8 @@ class Provider {
     //!  |- <TreeNode: {AAA/:}>
     //   |     |- <FileNode: {AAA/README.md}>
     //   |     |- <FileNode: {AAA/1.md}>
-    async addFile(filePath) {
+    async addFile(_filePath) {
+        const filePath = this.formatFilePath(_filePath)
         if (!(filePath in this.nodes)) {
             const fileNode = this.nodes[filePath] = new FileNode(filePath, {
                 resolvePath: this.resolvePath
