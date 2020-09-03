@@ -1,5 +1,5 @@
 <template>
-<link rel="stylesheet" href="/assets/adminlte.min.css" />
+<link rel="stylesheet" href="assets/adminlte.min.css" />
 <body class="hold-transition sidebar-mini layout-fixed">
   <div class="wrapper fixed">
     <div class="main-header"></div>
@@ -10,7 +10,7 @@
           <!-- Sidebar user panel (optional) -->
           <div class="user-panel mt-3 pb-3 mb-3 d-flex">
             <div class="image">
-              <img src="/assets/logo.png" class="img-circle elevation-2" alt="User Image" />
+              <img src="assets/logo.png" class="img-circle elevation-2" alt="User Image" />
             </div>
             <div class="info">
               <a href="#" class="d-block">Joseph Xia</a>
@@ -29,7 +29,7 @@
               <li class="nav-item has-treeview menu-open">
                 <ul class="nav nav-treeview">
                   <li class="nav-item" v-for="item in menu" v-bind:key="item.path">
-                    <a :href="'/' + item.path" class="nav-link">
+                    <a :href="item.path" class="nav-link">
                       <i class="far fa-circle nav-icon"></i>
                       <p>{{item.prefix}}{{item.name}}</p>
                     </a>
@@ -73,8 +73,8 @@
   </div>
 </body>
 
-<script src="/assets/jquery.min.js"></script>
-<script src="/assets/adminlte.min.js"></script>
+<script src="assets/jquery.min.js"></script>
+<script src="assets/adminlte.min.js"></script>
 </template>
 <script>
 </script>

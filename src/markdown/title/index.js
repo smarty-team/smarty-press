@@ -5,7 +5,7 @@ const README_FILE = 'README.md'
 
 // 批量获取标题
 function withTitles(paths, resolvePath) {
-
+  paths = Object.create(paths)
   // 路径排序，README.md 放最前面
   paths.sort((a, b) => {
     if (a == README_FILE || b == README_FILE) {
