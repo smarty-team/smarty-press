@@ -22,6 +22,7 @@ const createServer = (options = {
     watch.watchTree(options.watchFolder, f => {
         cursor.goto(0, 10)
         cursor.yellow().horizontalAbsolute(0).eraseLine().write('🚀 Reloading the page...')
+        cursor.reset()
         cursor.green().goto(0, 11)
 
         const bar = new ProgressBar({
