@@ -3,34 +3,47 @@ const http = require('http')
 const Koa = require('koa')
 const io = require('socket.io')
 const watch = require('watch')
-const ora = require('ora')
-const { pathToFileURL } = require('url')
 const path = require('path')
-const clear = require('clear')
+const ProgressBar = require('ascii-progress');
+const ansi = require('ansi')
+const cursor = ansi(process.stdout)
+
 const createServer = (options = {
     watchFolder: '.'
 }) => {
     const app = new Koa()
     const server = http.createServer(app.callback());
     var socket = io.listen(server);
-    const process = ora('🚚Listen Dir : ' + path.resolve(options.watchFolder))
-    socket.on('connection', function (client) {
+
+    socket.on('connection', function () {
         // console.log('网页监听....')
-        // clear()
-        process.start()
-        // clients.push(client)
     });
 
     watch.watchTree(options.watchFolder, f => {
-        process.stop()
-        console.log('reload...page')
+        cursor.goto(0, 10)
+        cursor.yellow().horizontalAbsolute(0).eraseLine().write('🚀 Reloading the page...')
+        cursor.green().goto(0, 11)
+
+        const bar = new ProgressBar({
+            schema: ':bar :percent :elapseds :etas',
+            blank: '░',
+            filled: '█',
+            total: 5,
+        });
+
+        const iv = setInterval(function () {
+            bar.tick();
+            if (bar.completed) {
+                clearInterval(iv);
+            }
+        }, 10);
+
         socket.emit('reload', f)
-        process.start()
     })
 
     app.use(async (ctx, next) => {
         await next()
-        
+
         if (ctx.type === ('text/html')) {
             ctx.body = `
             <!DOCTYPE html>
@@ -54,6 +67,7 @@ const createServer = (options = {
         start: (port = 3000) => {
             server.listen(port, () => {
                 console.log('Smarty Press Start At ' + port)
+                console.log('🚚Listen Dir : ' + path.resolve(options.watchFolder))
             })
         },
         use: (...args) => {

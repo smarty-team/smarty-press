@@ -1,25 +1,27 @@
 # Smart-Press
-- 快速高效的Markdown网站制作工具
-- 基于Vue3.0 SSR技术
 
+- 快速高效的 Markdown 网站制作工具
+- 基于 Vue3.0 SSR 技术
 
 ## 运行
+
 ```js
 # clone first
-yarn
-yarn start
+npm link
+spress start
 ```
-
-
 
 ```bash
 yarn add vue@3.0.0-beta.10
 
 ```
+
 # 主题库
 
 ## MarkDown
+
 https://www.sohu.com/a/312891335_100298843
 
-## 菜单模板 
-默认采用AdminLTE 后面可以开发 自由配置功能
+## 菜单模板
+
+默认采用 AdminLTE 后面可以开发 自由配置功能

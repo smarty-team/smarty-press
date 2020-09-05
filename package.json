@@ -16,7 +16,10 @@
   "dependencies": {
     "@vue/compiler-dom": "^3.0.0-rc.5",
     "@vue/server-renderer": "^3.0.0-rc.4",
+    "ansi": "^0.3.1",
+    "ascii-progress": "^1.0.5",
     "chalk": "^4.1.0",
+    "chalk-animation": "^1.6.0",
     "cheerio": "^1.0.0-rc.3",
     "clear": "^0.1.0",
     "commander": "^6.0.0",
