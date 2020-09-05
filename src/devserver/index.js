@@ -29,7 +29,7 @@ const createServer = (options = {
             schema: ':bar :percent :elapseds :etas',
             blank: '░',
             filled: '█',
-            total: 5,
+            total: 100,
         });
 
         const iv = setInterval(function () {
