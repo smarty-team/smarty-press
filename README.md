@@ -7,10 +7,9 @@
 
 ```js
 # clone first
-#npm link
-#spress start
-yarn
-yarn start
+npm link
+cd demo
+spress start
 ```
 
 ```bash
