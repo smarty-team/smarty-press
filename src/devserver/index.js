@@ -4,9 +4,7 @@ const Koa = require('koa')
 const io = require('socket.io')
 const watch = require('watch')
 const path = require('path')
-const ProgressBar = require('ascii-progress');
-const ansi = require('ansi')
-const cursor = ansi(process.stdout)
+const progress = require('../util/progress')
 
 const createServer = (options = {
     watchFolder: '.'
@@ -20,24 +18,8 @@ const createServer = (options = {
     });
 
     watch.watchTree(options.watchFolder, f => {
-        cursor.goto(0, 10)
-        cursor.yellow().horizontalAbsolute(0).eraseLine().write('🚀 Reloading the page...')
-        cursor.reset()
-        cursor.green().goto(0, 11)
-
-        const bar = new ProgressBar({
-            schema: ':bar :percent :elapseds :etas',
-            blank: '░',
-            filled: '█',
-            total: 100,
-        });
-
-        const iv = setInterval(function () {
-            bar.tick();
-            if (bar.completed) {
-                clearInterval(iv);
-            }
-        }, 10);
+        progress.init();
+        progress.step();
 
         socket.emit('reload', f)
     })

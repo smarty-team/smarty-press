@@ -15,6 +15,9 @@ program
     .description('启动本地开发环境')
     .action(async () => {
         clear()
+        console.log('')
+        console.log('')
+
         const data = await figlet('Smart Press')
         chalkAnimation.rainbow(data).start()
 
