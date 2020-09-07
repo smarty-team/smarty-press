@@ -2,25 +2,28 @@
 const program = require('commander')
 program.version(require('../package').version)
 const path = require('path')
-const {promisify} = require('util')
+const { promisify } = require('util')
 const figlet = promisify(require('figlet'))
 const clear = require('clear')
-const chalk = require('chalk')
-const log = content => console.log(chalk.green(content))
-const {startDev} = require('../src/index')
+const { startDev } = require('../src/index')
 const open = require("open")
+const chalkAnimation = require('chalk-animation');
+
 
 program
     .command('start')
     .description('启动本地开发环境')
     .action(async () => {
         clear()
+        console.log('')
+        console.log('')
+
         const data = await figlet('Smart Press')
-        log(data)
+        chalkAnimation.rainbow(data).start()
 
         // 启动开发服务器
         startDev({
-            root : path.resolve('.')
+            root: path.resolve('.')
         })
 
         // 打开浏览器
