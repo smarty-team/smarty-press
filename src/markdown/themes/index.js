@@ -4,7 +4,8 @@ const path = require('path')
 const styles = {} // 样式
 
 const themes = [ // 皮肤列表
-  { name: '默认样式', file: 'mark.css' }
+  { name: '默认样式', file: 'mark.css' },
+  { name: 'techo', file: 'techo.css' },
 ]
 
 // 样式常驻内存，只在第一次读取
@@ -30,6 +31,6 @@ function addTheme(theme) {
   styles[theme.name] = {
     ...theme,
     css: css,
-    html: `<style>${css}</style>`
+    html: `<style name="${theme.name}">${css}</style>`
   }
 }
