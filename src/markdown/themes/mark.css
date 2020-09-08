@@ -420,3 +420,13 @@ table tr:last-child td:last-child {
     -webkit-border-radius: 0 0 6px 0;
     border-radius: 0 0 6px 0;
 }
+
+/* smart press */
+.content {
+    font-family: "PingFangSC-Regular", "Microsoft YaHei", arial, sans-serif;
+    padding: 0 40px !important;
+}
+
+.content p {
+    color: #666666;
+}
