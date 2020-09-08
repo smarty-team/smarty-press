@@ -51,7 +51,8 @@ module.exports.startDev = (options = {
 
         const { request: { url, query } } = ctx
         const skin = query.skin || '默认皮肤'
-        const reqFile = path.extname(url) === '' ? url + '/README.md' : url
+        const reqPath = url.split('?')[0]
+        const reqFile = path.extname(reqPath) === '' ? reqPath + '/README.md' : reqPath
         const data = {
             menu: provider.toArray(fileNode => ({
                 path: fileNode.path,
