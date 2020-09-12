@@ -53,26 +53,30 @@ module.exports.startDev = (options = {
         const skin = query.skin || '默认皮肤'
         const reqPath = url.split('?')[0]
         const reqFile = path.extname(reqPath) === '' ? reqPath + '/README.md' : reqPath
+
         const data = {
             menu: provider.toArray(fileNode => ({
                 path: fileNode.path,
                 name: fileNode.title,
                 prefix: fileNode.prefix || ''
             })),
-            markdown: provider.getItem(reqFile, fileNode => {
-                if (!fileNode) {
-                    return `<h1>文件不存在: ${reqFile}</h1>`
-                }
-                return [
-                    // 面包屑也可以通过 fileNode.breadcrumb.toHtml(treeNode, indexFileNode) 方式获取更加复杂的样式
-                    `<nav aria-label="breadcrumb"><ol class="breadcrumb">${fileNode.breadcrumb.html}</ol></nav>`,
-                    // 解析后的 html
-                    fileNode.html,
-                    // 样式代码
-                    fileNode.getTheme(skin).html
-                ].join('')
-            })
+            breadcrumb: null, //面包屑导航
+            catalogs: [], //目录
+            markdown: '' //正文
         }
+        await provider.getItem(reqFile, fileNode => {
+            if (!fileNode) {
+                data.markdown = `<h1>文件不存在: ${reqFile}</h1>`
+            } else {
+                // 面包屑也可以通过 fileNode.breadcrumb.toHtml(treeNode, indexFileNode) 方式获取更加复杂的样式
+                data.breadcrumb = fileNode.breadcrumb.html
+                data.catalogs = fileNode.catalogs
+                data.markdown = [
+                    fileNode.html, // 解析后的 html
+                    fileNode.getTheme(skin).html  // 样式代码
+                ].join('')
+            }
+        });
         ctx.body = await ssr.createRender(path.resolve(__dirname, './template/App.vue'))(data)
         await next()
     })

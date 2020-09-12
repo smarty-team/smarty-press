@@ -41,7 +41,7 @@ class FileNode {
   getFileBody() {
     return fs.readFileSync(this.realPath, {
       encoding: 'utf-8'
-    })
+    }).replace(/\r\n/g, '\n')
   }
 
 }
