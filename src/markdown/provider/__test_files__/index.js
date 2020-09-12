@@ -30,7 +30,7 @@ const resolvePath = (filePath) => {
 const openFileAsText = (filePath) => {
   return fs.readFileSync(resolvePath(filePath), {
     encoding: 'utf-8'
-  }).replace('\r\n', '\n')
+  }).replace(/\r\n/g, '\n')
 }
 
 // 测试文件
