@@ -21,7 +21,7 @@ yarn add vue@3.0.0-beta.10
 
 ## MarkDown
 
-https://www.sohu.com/a/312891335_100298843
+http://zhongce.sina.com.cn/article/view/18867
 
 ## 菜单模板
 

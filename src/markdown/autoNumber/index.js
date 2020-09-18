@@ -1,21 +1,31 @@
 module.exports = async ({ fileNode }, next) => {
-  fileNode.body = analysisTitle(fileNode.body)
+  const { body, list } = analysisTitle(fileNode.body)
+  fileNode.catalogs = list
+  fileNode.body = body
   await next()
 }
 
 function analysisTitle(body) {
-  const arr = body.replace('\r\n', '\n').split('\n')
+  const arr = body.split('\n')
   let number = {
     h1: 0,
     h2: 0,
   }
   let beforTag = ''
+  let contentsData = {
+    list: [],
+    last: null
+  }
   const ret = arr.map(v => {
     if (v.startsWith('## ')) {
       number.h1 += 1
       let serialNumber = customChieseNumber(number.h1)
       v = v.replace('## ', `## ${serialNumber}、`)
       beforTag = '##'
+
+      // 保存目录
+      contentsData.list.push(createCatalogNode(v))
+      contentsData.last = contentsData.list[contentsData.list.length - 1].children
     } else if (v.startsWith('### ')) {
       if (beforTag === '###') {
         number.h2 += 1
@@ -24,10 +34,14 @@ function analysisTitle(body) {
       }
       v = v.replace('### ', `### ${number.h2}. `)
       beforTag = '###'
+      contentsData.last.push(createCatalogNode(v)) // 保存目录
     }
     return v
   })
-  return ret.join('\n')
+  return {
+    list: contentsData.list,
+    body: ret.join('\n')
+  }
 }
 
 function customChieseNumber(number) {
@@ -79,8 +93,16 @@ function customChieseNumber(number) {
       numString.substr(1) == 0
         ? ''
         : numString.substr(1) >= 10 && numString.substr(1) < 20
-        ? '一' + customChieseNumber(numString.substr(1))
-        : customChieseNumber(numString.substr(1))
+          ? '一' + customChieseNumber(numString.substr(1))
+          : customChieseNumber(numString.substr(1))
     return prefix + suffix
+  }
+}
+
+function createCatalogNode(title) {
+  return {
+    title: title.replace(/#/g, '').trim(),
+    children: [],
+    hash: title
   }
 }

@@ -2,18 +2,23 @@
 const program = require('commander')
 program.version(require('../package').version)
 const path = require('path')
+const fs = require('fs')
 const { promisify } = require('util')
 const figlet = promisify(require('figlet'))
 const clear = require('clear')
 const { startDev } = require('../src/index')
 const open = require("open")
 const chalkAnimation = require('chalk-animation');
+const { fstat } = require('fs')
 
 
 program
     .command('start')
     .description('启动本地开发环境')
-    .action(async () => {
+    .usage('[options] root-path')
+    .option('-t, --theme [theme]', 'Markdown样式，可选 default、techo')
+    .option('-p, --port [port]', '监听端口')
+    .action(async (options) => {
         clear()
         console.log('')
         console.log('')
@@ -23,20 +28,34 @@ program
 
         // 启动开发服务器
         startDev({
-            root: path.resolve('.')
+            theme: options.theme || 'default',
+            port: options.port || 3000,
+            root: path.resolve(options.args.length > 0 ? options.args[0] : '.')
         })
 
         // 打开浏览器
         open(`http://localhost:3000`);
     })
 
-
 program
     .command('build')
     .description('编译页面文件(生成html)')
-    .action(async () => {
-        console.log('编译静态文件')
+    .option('-o, --output [output]', '输出目录')
+    .action(async (options) => {
+        clear()
+        console.log('')
+
+        const output = options.output || 'dist'
+        console.log(`编译静态文件，输出目录: ${output}`)
+
+        !fs.existsSync(path.resolve(output)) && fs.mkdirSync(path.resolve(output))
+        fs.writeFileSync(path.resolve(`${output}/index.html`), "<h1>Smart Press</h1>", {
+            encoding: 'utf-8'
+        })
+
+        process.exit()
     })
+
 program
     .command('publish')
     .description('发布文件到服务器')
