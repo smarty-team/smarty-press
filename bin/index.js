@@ -2,15 +2,13 @@
 const program = require('commander')
 program.version(require('../package').version)
 const path = require('path')
-const fs = require('fs')
 const { promisify } = require('util')
 const figlet = promisify(require('figlet'))
 const clear = require('clear')
 const { startDev } = require('../src/index')
 const open = require("open")
-const chalkAnimation = require('chalk-animation');
-const { fstat } = require('fs')
-
+const chalkAnimation = require('chalk-animation')
+const build = require('./build')
 
 program
     .command('start')
@@ -40,17 +38,16 @@ program
 program
     .command('build')
     .description('编译页面文件(生成html)')
+    .option('-t, --theme [theme]', 'Markdown样式，可选 default、techo')
     .option('-o, --output [output]', '输出目录')
     .action(async (options) => {
-        clear()
         console.log('')
 
-        const output = options.output || 'dist'
-        console.log(`编译静态文件，输出目录: ${output}`)
-
-        !fs.existsSync(path.resolve(output)) && fs.mkdirSync(path.resolve(output))
-        fs.writeFileSync(path.resolve(`${output}/index.html`), "<h1>Smart Press</h1>", {
-            encoding: 'utf-8'
+        // 生成静态
+        await build({
+            theme: options.theme || 'default',
+            root: path.resolve(options.args.length > 0 ? options.args[0] : '.'),
+            output: path.resolve(options.output || 'dist')
         })
 
         process.exit()
