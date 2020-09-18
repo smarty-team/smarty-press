@@ -13,7 +13,10 @@ const chalkAnimation = require('chalk-animation');
 program
     .command('start')
     .description('启动本地开发环境')
-    .action(async () => {
+    .usage('[options] root-path')
+    .option('-t, --theme [theme]', 'Markdown样式，可选 default、techo')
+    .option('-p, --port [port]', '监听端口')
+    .action(async (options) => {
         clear()
         console.log('')
         console.log('')
@@ -23,13 +26,14 @@ program
 
         // 启动开发服务器
         startDev({
-            root: path.resolve('.')
+            theme: options.theme || 'default',
+            port: options.port || 3000,
+            root: path.resolve(options.args.length > 0 ? options.args[0] : '.')
         })
 
         // 打开浏览器
         open(`http://localhost:3000`);
     })
-
 
 program
     .command('build')
@@ -37,6 +41,7 @@ program
     .action(async () => {
         console.log('编译静态文件')
     })
+
 program
     .command('publish')
     .description('发布文件到服务器')
