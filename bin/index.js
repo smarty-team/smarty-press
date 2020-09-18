@@ -2,12 +2,14 @@
 const program = require('commander')
 program.version(require('../package').version)
 const path = require('path')
+const fs = require('fs')
 const { promisify } = require('util')
 const figlet = promisify(require('figlet'))
 const clear = require('clear')
 const { startDev } = require('../src/index')
 const open = require("open")
 const chalkAnimation = require('chalk-animation');
+const { fstat } = require('fs')
 
 
 program
@@ -39,7 +41,17 @@ program
     .command('build')
     .description('编译页面文件(生成html)')
     .action(async () => {
+        clear()
+        console.log('')
         console.log('编译静态文件')
+
+        !fs.existsSync(path.resolve('.spress')) && fs.mkdirSync(path.resolve('.spress'))
+        !fs.existsSync(path.resolve('.spress/dist')) && fs.mkdirSync(path.resolve('.spress/dist'))
+        fs.writeFileSync(path.resolve('.spress/dist/index.html'), "<h1>Smart Press</h1>", {
+            encoding: 'utf-8'
+        })
+
+        process.exit()
     })
 
 program
