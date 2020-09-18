@@ -7,7 +7,8 @@
     "spress": "./bin/index.js"
   },
   "scripts": {
-    "start": "node index.js",
+    "start": "node bin/index.js start demo",
+    "install": "npm link",
     "dev": "nodemon index.js"
   },
   "keywords": [],

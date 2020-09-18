@@ -1,18 +1,21 @@
 const { createServer } = require('./devserver')
-const { tranHtml } = require('./markdown')
 const { createMiddleware } = require('./menu')
 const path = require('path')
 const ssr = require('./ssr')
-const app = createServer()
 const fs = require('fs')
 const provider = require('./markdown')
 
 const KoaStatic = require('koa-static')
 
 module.exports.startDev = (options = {
+    theme: 'default',
     root: path.resolve('.'),
     port: 3000
 }) => {
+
+    const app = createServer({
+        watchFolder: options.root
+    })
 
     // 获取文件目录
     provider.resolvePath = filePath => path.resolve(options.root, './' + filePath)
@@ -50,7 +53,7 @@ module.exports.startDev = (options = {
         await provider.patch(ctx.menu)
 
         const { request: { url, query } } = ctx
-        const skin = query.skin || '默认皮肤'
+        const skin = options.theme || '默认皮肤'
         const reqPath = url.split('?')[0]
         const reqFile = path.extname(reqPath) === '' ? reqPath + '/README.md' : reqPath
 
