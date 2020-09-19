@@ -4,8 +4,7 @@ let indexData = {}
 
 // Markdown 转 HTML
 module.exports = async ({ fileNode }, next) => {
-  await next()
-
+  
   // 菜单处理
   if (fileNode.catalogs instanceof Array) {
     catelogs = {}
@@ -14,6 +13,8 @@ module.exports = async ({ fileNode }, next) => {
 
   // HTML处理
   fileNode.html = marked(fileNode.body)
+
+  await next()
 }
 
 function setCatelogs(catelogs) {
