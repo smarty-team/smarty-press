@@ -48,9 +48,9 @@ const copyAssets = (sourcePath, { assetsPath, distPath }) => {
     if (fs.lstatSync(assetsPath(relativePath)).isDirectory()) {
       copyAssets(relativePath, provider) // 如果是目录，则继续遍历
     } else {
+      // 复制资源文件
       console.log(`  ${relativePath}`)
-      fs.createReadStream(assetsPath(relativePath))
-        .pipe(fs.createWriteStream(distPath(relativePath)))
+      fs.copyFileSync(assetsPath(relativePath), distPath(relativePath))
     }
   })
 }
@@ -78,7 +78,7 @@ module.exports = async function (options = {
 
   // 复制 asssets 文件
   console.log('文件复制：')
-  copyAssets('assets', provider)
+  await copyAssets('assets', provider)
 
   // 生成静态
   console.log('生成静态：')
