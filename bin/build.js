@@ -67,12 +67,14 @@ module.exports = async function (options = {
     `输出目录: ${options.output}`
   ].join('\n  '))
 
-
   // 分析源码
   provider.resolvePath = filePath => path.resolve(options.root, filePath)
   provider.distPath = filePath => path.resolve(options.output, filePath)
   provider.assetsPath = filePath => path.resolve(__dirname, '../src/', filePath)
   await provider.patch(await getFolder(options.root))
+
+  // 如果不存在输出目录，则创建
+  !fs.existsSync(options.output) && fs.mkdirSync(options.output)
 
   // 复制 asssets 文件
   console.log('文件复制：')
