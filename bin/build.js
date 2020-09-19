@@ -12,8 +12,10 @@ const makeFiles = async (provider, options) => {
     const node = provider.nodes[nodeName]
     if (node.isFileNode) {
       // 文件节点
-      files.push(node.path)
+      delete provider.nodes[node.path]
       node.path = node.path.replace('README.', 'index.').replace('.md', '.html')
+      provider.nodes[node.path] = node
+      files.push(node.path)
     } else {
       // 目录节点，依次创建目录结构
       const folderPath = provider.distPath(node.path)
