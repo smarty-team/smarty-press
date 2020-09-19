@@ -35,8 +35,24 @@ const makeFiles = async (provider, options) => {
     fs.writeFileSync(provider.distPath(reqFile), body, {
       encoding: 'utf-8'
     })
+    console.log(`  ${reqFile}`)
     reqFile = files.shift()
   }
+}
+
+const copyAssets = (sourcePath, { assetsPath, distPath }) => {
+  const distRealPath = distPath(sourcePath)
+  !fs.existsSync(distRealPath) && fs.mkdirSync(distRealPath)   // 目录不存在，则创建
+  fs.readdirSync(assetsPath(sourcePath)).forEach(file => {  // 遍历目录
+    const relativePath = `${sourcePath}/${file}`
+    if (fs.lstatSync(assetsPath(relativePath)).isDirectory()) {
+      copyAssets(relativePath, provider) // 如果是目录，则继续遍历
+    } else {
+      console.log(`  ${relativePath}`)
+      fs.createReadStream(assetsPath(relativePath))
+        .pipe(fs.createWriteStream(distPath(relativePath)))
+    }
+  })
 }
 
 module.exports = async function (options = {
@@ -45,19 +61,25 @@ module.exports = async function (options = {
   output: path.resolve('dist')
 }) {
 
-  console.log(`编译静态文件
-源码目录: ${options.root}
-输出目录: ${options.output}`)
+  console.log([
+    '生成静态文件：',
+    `源码目录: ${options.root}`,
+    `输出目录: ${options.output}`
+  ].join('\n  '))
 
 
   // 分析源码
-  provider.resolvePath = filePath => path.resolve(options.root, './' + filePath)
-  provider.distPath = filePath => path.resolve(options.output, './' + filePath)
+  provider.resolvePath = filePath => path.resolve(options.root, filePath)
+  provider.distPath = filePath => path.resolve(options.output, filePath)
+  provider.assetsPath = filePath => path.resolve(__dirname, '../src/', filePath)
   await provider.patch(await getFolder(options.root))
 
-  // todo 复制 asssets 文件
+  // 复制 asssets 文件
+  console.log('文件复制：')
+  copyAssets('assets', provider)
 
   // 生成静态
+  console.log('生成静态：')
   await makeFiles(provider, options)
 
   console.log('生成完毕')
