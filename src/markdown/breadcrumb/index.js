@@ -1,5 +1,10 @@
 // 计算面包屑
 
+const indexFiles = [
+  'README.md',
+  'index.html'
+]
+
 module.exports = async ({ fileNode }, next) => {
   const breadcrumb = fileNode.breadcrumb = {
     nodes: [fileNode], //父子关系，
@@ -29,7 +34,7 @@ function toHtml(formatNode, separator) {
         treeNode, // 其他节点 为 treeNode 节点
       treeNode.isFileNode ?
         treeNode : // 如果节点是 fileNode，直接传入
-        treeNode.children.length > 0 && treeNode.getFileName(treeNode.children[0]) == 'README.md' ?
+        treeNode.children.length > 0 && indexFiles.indexOf(treeNode.getFileName(treeNode.children[0])) != -1 ?
           treeNode.children[0] : // 如果 当前 treeNode 节点存在子节点，并且第一个为 README.md，传入
           null
     )
@@ -41,7 +46,11 @@ function formatDefault(treeNode, indexFileNode) {
   let itemHtml = ''
   if (indexFileNode) {
     // treeNode存在 首页( README.md)，显示链接
-    itemHtml = `<a href="/${indexFileNode.path.replace('README.md', '')}">${indexFileNode.title || indexFileNode.path}</a>`
+    let path = indexFileNode.path
+    indexFiles.forEach(item=>{
+      path = path.replace(item, '')
+    })
+    itemHtml = `<a href="/${path}">${indexFileNode.title || indexFileNode.path}</a>`
   } else {
     // treeNode 无首页，只显示 路径文本
     itemHtml = treeNode.path
