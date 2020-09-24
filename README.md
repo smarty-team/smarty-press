@@ -1,9 +1,23 @@
 # Smart-Press
-
 - 快速高效的 Markdown 网站制作工具
 - 基于 Vue3.0 SSR 技术
 
-## 运行
+## Getting Started
+Manually
+```bash
+# install 
+npm install smarty-press -g
+
+# start to writing 
+spress start
+
+# build to html
+spress build
+
+```
+
+
+## Development
 
 ```js
 # clone first
