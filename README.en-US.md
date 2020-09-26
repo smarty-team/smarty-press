@@ -1,9 +1,9 @@
-简体中文| [English](./README.en-US.md)
+English | [简体中文](./README.md)
 # Smart-Press
-- 快速高效的 Markdown 网站制作工具
-- 基于 Vue3.0 SSR 技术
+- Fast and efficient Markdown website making tool
+- Based on Vue3.0 SSR technology
 
-## 起步
+## Getting Started
 Manually
 ```bash
 # install 
@@ -18,7 +18,7 @@ spress build
 ```
 
 
-## 开发
+## Development
 
 ```js
 # clone first
@@ -32,14 +32,14 @@ yarn add vue@3.0.0-beta.10
 
 ```
 
-# 主题库
+# Subject library
 
 ## MarkDown
 
 http://zhongce.sina.com.cn/article/view/18867
 
-## 菜单模板
+## The menu template
 
-* 默认：采用 AdminLTE 
-* 开发中:
-    * 菜单自由配置功能
+* default： AdminLTE 
+* todo:
+    *  Menu free configuration function
