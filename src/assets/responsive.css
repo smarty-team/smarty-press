@@ -1,0 +1,53 @@
+@media screen and (min-width: 768px) {
+  .markdown-catalogs {
+    position: fixed;
+    right: 10px;
+    background: #FFF;
+    border-radius: 5px;
+    padding: 15px;
+    width: 280px;
+  }
+
+  .body-catalogs {
+    padding-right: 290px
+  }
+
+  .control-sidebar {
+    display: block;
+  }
+
+  .toolkits {
+    display: none;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .markdown-catalogs {
+    right: 10px;
+    background: #FFF;
+    border-radius: 5px;
+    padding: 10px;
+    margin: 0 20px 40px;
+  }
+
+  .toolkits {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+  }
+
+  .toolkits-item {
+    font-size: 30px;
+    background: rgba(100, 100, 100, 0.4);
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 35px;
+    border-radius: 5px;
+    margin: 5px;
+  }
+
+  .toolkits a {
+    color: #FFF;
+  }
+}

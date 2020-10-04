@@ -31,4 +31,4 @@
 
 ## 插件开发说明
 
-[点击这里打开：https://github.com/su37josephxia/smarty-press/tree/master/src/markdown/provider/__test_files__/](https://github.com/su37josephxia/smarty-press/tree/master/src/markdown/provider/__test_files__/)
+[点击这里打开：插件开发说明](https://github.com/su37josephxia/smarty-press/tree/master/src/markdown/provider/__test_files__/)
