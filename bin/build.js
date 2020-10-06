@@ -13,7 +13,7 @@ const makeFiles = async (provider, options) => {
     if (node.isFileNode) {
       // 文件节点
       delete provider.nodes[node.path]
-      node.path = node.path.replace('README.', 'index.').replace('.md', '.html')
+      node.path = node.path.replace(/README\./g, 'index.').replace(/\.md/g, '.html')
       provider.nodes[node.path] = node
       files.push(node.path)
     } else {
@@ -32,7 +32,7 @@ const makeFiles = async (provider, options) => {
       template: ssr.template,
       options
     })
-    fs.writeFileSync(provider.distPath(reqFile), body, {
+    fs.writeFileSync(provider.distPath(reqFile), `<!--DOCTYPE html-->${body}`, {
       encoding: 'utf-8'
     })
     console.log(`  ${reqFile}`)
