@@ -31,6 +31,8 @@ spress start
 yarn add vue@3.0.0-beta.10
 
 ```
+### Plugin Development
+see[dedicated section in docs.](https://github.com/su37josephxia/smarty-press/tree/master/src/markdown/provider/__test_files__/)
 
 # Subject library
 
@@ -43,3 +45,7 @@ http://zhongce.sina.com.cn/article/view/18867
 * default： AdminLTE 
 * todo:
     *  Menu free configuration function
+
+## Documentation
+
+we are still working on refining it and contributions are welcome!

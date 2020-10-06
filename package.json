@@ -16,6 +16,7 @@
   "license": "ISC",
   "dependencies": {
     "@vue/compiler-dom": "^3.0.0-rc.5",
+    "@vue/compiler-sfc": "^3.0.0",
     "@vue/server-renderer": "^3.0.0-rc.4",
     "chalk": "^4.1.0",
     "chalk-animation": "^1.6.0",
@@ -31,7 +32,7 @@
     "ora": "^4.0.5",
     "socket.io": "^2.3.0",
     "terminal-kit": "^1.43.0",
-    "vue": "^3.0.0-rc.5",
+    "vue": "3.0.0-beta.10",
     "watch": "^1.0.2"
   },
   "devDependencies": {

@@ -6,7 +6,6 @@ const fs = require('fs')
 const provider = require('./markdown')
 
 const KoaStatic = require('koa-static')
-
 module.exports.startDev = (options = {
     theme: 'default',
     root: path.resolve('.'),
