@@ -32,6 +32,11 @@ yarn add vue@3.0.0-beta.10
 
 ```
 
+###  插件开发   
+
+请[参阅插件开发文档。](https://github.com/su37josephxia/smarty-press/tree/master/src/markdown/provider/__test_files__/)
+
+
 # 主题库
 
 ## MarkDown
@@ -43,3 +48,7 @@ http://zhongce.sina.com.cn/article/view/18867
 * 默认：采用 AdminLTE 
 * 开发中:
     * 菜单自由配置功能
+
+## 文档
+
+我们仍在完善它，欢迎贡献!

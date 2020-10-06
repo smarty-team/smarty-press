@@ -6,13 +6,11 @@ const fs = require('fs')
 const provider = require('./markdown')
 
 const KoaStatic = require('koa-static')
-
 module.exports.startDev = (options = {
     theme: 'default',
     root: path.resolve('.'),
     port: 3000
 }) => {
-
     const app = createServer({
         watchFolder: options.root
     })
@@ -51,7 +49,6 @@ module.exports.startDev = (options = {
 
     app.use(async (ctx, next) => {
         await provider.patch(ctx.menu)
-
         const { request: { url, query } } = ctx
         const reqPath = url.split('?')[0]
         const reqFile = path.extname(reqPath) === '' ? reqPath + '/README.md' : reqPath

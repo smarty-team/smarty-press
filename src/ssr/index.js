@@ -6,9 +6,9 @@ const fs = require('fs')
 const path = require('path')
 
 const createRender = path => {
+   
     const { descriptor } = compilerSfc.parse(fs.readFileSync(path, 'utf-8'))
     const render = compilerSsr.compile(descriptor.template.content).code
-
     return async (data) => {
         const app = Vue.createApp({
             ssrRender: new Function('require', render)(require), // 写法二
