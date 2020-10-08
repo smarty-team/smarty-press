@@ -32,7 +32,7 @@ const makeFiles = async (provider, options) => {
       template: ssr.template,
       options
     })
-    fs.writeFileSync(provider.distPath(reqFile), body, {
+    fs.writeFileSync(provider.distPath(reqFile), `<!DOCTYPE html>${body}`, {
       encoding: 'utf-8'
     })
     console.log(`  ${reqFile}`)

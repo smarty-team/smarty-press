@@ -26,6 +26,7 @@ const renderMarkdown = async ({ reqFile, template, provider, options }) => {
             name: fileNode.title,
             prefix: fileNode.prefix || ''
         })),
+        skinPath: '', //样式
         breadcrumb: null, //面包屑导航
         catalogs: [], //目录
         markdown: '' //正文
@@ -37,9 +38,9 @@ const renderMarkdown = async ({ reqFile, template, provider, options }) => {
             // 面包屑也可以通过 fileNode.breadcrumb.toHtml(treeNode, indexFileNode) 方式获取更加复杂的样式
             data.breadcrumb = fileNode.breadcrumb.html
             data.catalogs = fileNode.catalogs
+            data.skinPath = fileNode.getTheme(skin).path  // 样式代码
             data.markdown = [
                 fileNode.html, // 解析后的 html
-                fileNode.getTheme(skin).html  // 样式代码
             ].join('')
         }
     });
