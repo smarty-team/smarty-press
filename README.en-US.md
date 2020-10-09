@@ -2,6 +2,10 @@ English | [简体中文](./README.md)
 # Smart-Press
 - Fast and efficient Markdown website making tool
 - Based on Vue3.0 SSR technology
+## Weixin
+
+![qrcode](assets/qrcode-2216750.JPG)
+
 
 ## Getting Started
 Manually

@@ -3,7 +3,12 @@
 - 快速高效的 Markdown 网站制作工具
 - 基于 Vue3.0 SSR 技术
 
+## 交流群
+
+![qrcode](assets/qrcode-2216750.JPG)
+
 ## 起步
+
 Manually
 ```bash
 # install 
