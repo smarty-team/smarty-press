@@ -4,8 +4,8 @@ const path = require('path')
 const styles = {} // 样式
 
 const themes = [ // 皮肤列表
-  { name: '默认样式', file: 'mark.css' },
-  { name: 'techo', file: 'techo.css' },
+  { name: '默认样式', file: 'mark' },
+  { name: 'techo', file: 'techo' },
 ]
 
 // 样式常驻内存，只在第一次读取
@@ -25,12 +25,14 @@ module.exports = async ({ fileNode }, next) => {
 }
 
 function addTheme(theme) {
-  const css = fs.readFileSync(path.join(__dirname, theme.file), {
+  const linkPath = `/assets/themes/${theme.file}/style.css`;
+  const css = fs.readFileSync(path.join(__dirname, '../..' + linkPath), {
     encoding: 'utf-8'
   })
   styles[theme.name] = {
     ...theme,
     css: css,
-    html: `<style name="${theme.name}">${css}</style>`
+    html: `<style name="${theme.name}">${css}</style>`,
+    path: linkPath
   }
 }

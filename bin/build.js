@@ -39,7 +39,7 @@ const makeFiles = async (provider, options) => {
       template: ssr.template,
       options
     })
-    fs.writeFileSync(provider.distPath(reqFile), replaceKeyword(body), {
+    fs.writeFileSync(provider.distPath(reqFile), `<!DOCTYPE html>${replaceKeyword(body)}`, {
       encoding: 'utf-8'
     })
     console.log(`  ${reqFile}`)
