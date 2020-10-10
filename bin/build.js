@@ -4,6 +4,13 @@ const fs = require('fs')
 const { getFolder } = require('../src/menu')
 const provider = require('../src/markdown')
 
+// 替换 a href=**/README.md /index.html
+const replaceKeyword = (body) => {
+  return body.replace(/(<a.*?href\=)(.*?)(>.*?<\/a>)/g, (math, $1, $2, $3) => {
+    return `${$1}${$2.replace('/README.', '/index.').replace('.md', '.html')}${$3}`
+  })
+}
+
 const makeFiles = async (provider, options) => {
 
   // 获取所有源码文件
@@ -32,7 +39,7 @@ const makeFiles = async (provider, options) => {
       template: ssr.template,
       options
     })
-    fs.writeFileSync(provider.distPath(reqFile), `<!DOCTYPE html>${body}`, {
+    fs.writeFileSync(provider.distPath(reqFile), `<!DOCTYPE html>${replaceKeyword(body)}`, {
       encoding: 'utf-8'
     })
     console.log(`  ${reqFile}`)
