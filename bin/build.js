@@ -7,7 +7,7 @@ const provider = require('../src/markdown')
 // 替换 a href=**/README.md /index.html
 const replaceKeyword = (body) => {
   return body.replace(/(<a.*?href\=)(.*?)(>.*?<\/a>)/g, (math, $1, $2, $3) => {
-    return `${$1}${$2.replace('/README.md', '/index.html')}${$3}`
+    return `${$1}${$2.replace('/README.', '/index.').replace('.md', '.html')}${$3}`
   })
 }
 
