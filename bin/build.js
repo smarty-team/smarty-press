@@ -32,11 +32,22 @@ const makeFiles = async (provider, options) => {
 
   // 根据文件记录，依次生成静态
   let reqFile = files.shift()
+
+
   while (reqFile) {
+    // 判断是否存在自定义模板
+    let template = path.resolve(options.root,'./template/App.vue')
+    if(fs.existsSync(template)) {
+        
+    }else {
+        template = ssr.template
+    }
+    console.log('使用自定义模板:'+template)
+
     const body = await ssr.renderMarkdown({
       reqFile,
       provider,
-      template: ssr.template,
+      template,
       options
     })
     fs.writeFileSync(provider.distPath(reqFile), `<!DOCTYPE html>${replaceKeyword(body)}`, {

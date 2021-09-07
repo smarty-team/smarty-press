@@ -49,8 +49,9 @@ program
             root: path.resolve(options.args.length > 0 ? options.args[0] : '.'),
             output: path.resolve(options.output || 'dist')
         })
-
-        process.exit()
+        
+        // TODO: 强行退出程序 + 使用watch 会造成命令行出现莫名其妙的字符
+        // process.exit(0)
     })
 
 program

@@ -5,7 +5,6 @@ const ssr = require('./ssr')
 const fs = require('fs')
 const provider = require('./markdown')
 
-const KoaStatic = require('koa-static')
 module.exports.startDev = (options = {
     theme: 'default',
     root: path.resolve('.'),
@@ -51,12 +50,23 @@ module.exports.startDev = (options = {
         await provider.patch(ctx.menu)
         const { request: { url, query } } = ctx
         const reqPath = url.split('?')[0]
+
+        // 判断是否存在自定义模板
+        let template = path.resolve(options.root,'./template/App.vue')
+        if(fs.existsSync(template)) {
+            
+        }else {
+            template = ssr.template
+        }
+        // console.log('使用自定义模板:'+template)
+
+        // markdown文件位置
         const reqFile = path.extname(reqPath) === '' ? reqPath + '/README.md' : reqPath
 
         ctx.body = await ssr.renderMarkdown({
             reqFile,
             provider,
-            template: ssr.template,
+            template,
             options
         })
 

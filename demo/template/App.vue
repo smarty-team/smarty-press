@@ -1,6 +1,7 @@
 <template>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta charset="UTF-8">
+  <title>自动定义模板测试</title>
   <link rel="stylesheet" href="/assets/adminlte.min.css" />
   <link rel="stylesheet" :href="skinPath" />
   <link rel="stylesheet" href="/assets/responsive.css" />
@@ -22,7 +23,7 @@
                 />
               </div>
               <div class="info">
-                <a href="#" class="d-block">Joseph Xia</a>
+                <a href="#" class="d-block">全栈然叔</a>
               </div>
             </div>
             <!-- Sidebar Menu -->
