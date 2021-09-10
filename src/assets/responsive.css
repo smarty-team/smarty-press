@@ -1,3 +1,9 @@
+/* 414px iphone6/7/8 Plus宽度 */
+@media screen and (max-width: 414px) {
+  .markdown-catalogs {
+    display: none;
+  }
+}
 @media screen and (min-width: 768px) {
   .markdown-catalogs {
     position: fixed;
