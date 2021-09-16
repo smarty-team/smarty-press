@@ -1,68 +1,77 @@
 /* 414px iphone6/7/8 Plus宽度 */
 @media screen and (max-width: 414px) {
-  .markdown-catalogs {
-    display: none;
-  }
+    .markdown-catalogs {
+        display: none;
+    }
 }
 @media screen and (min-width: 768px) {
-  .markdown-catalogs {
-    position: fixed;
-    right: 10px;
-    background: #FFF;
-    border-radius: 5px;
-    padding: 15px;
-    width: 280px;
-  }
+    .markdown-catalogs {
+        position: fixed;
+        right: 10px;
+        background: #FFF;
+        border-radius: 5px;
+        padding: 15px;
+        width: 280px;
+    }
 
-  .body-catalogs {
-    padding-right: 290px
-  }
+    .body-catalogs {
+        padding-right: 290px
+    }
 
-  .control-sidebar {
-    display: block;
-  }
+    .control-sidebar {
+        display: block;
+    }
 
-  .toolkits {
-    display: none;
-  }
+    .toolkits {
+        display: none;
+    }
+
+    iframe {
+        width: 670px;
+        aspect-ratio: 3/2;
+    }
 }
 
 @media screen and (max-width: 768px) {
-  .markdown-catalogs {
-    right: 10px;
-    background: #FFF;
-    border-radius: 5px;
-    padding: 10px;
-    margin: 0 20px 40px;
-  }
+    .markdown-catalogs {
+        right: 10px;
+        background: #FFF;
+        border-radius: 5px;
+        padding: 10px;
+        margin: 0 20px 40px;
+    }
 
-  .toolkits {
-    position: fixed;
-    bottom: 10px;
-    right: 10px;
-  }
+    .toolkits {
+        position: fixed;
+        bottom: 10px;
+        right: 10px;
+    }
 
-  .toolkits-item {
-    background: rgba(100, 100, 100, 0.4);
-    width: 40px;
-    height: 40px;
-    text-align: center;
-    line-height: 40px;
-    border-radius: 5px;
-    margin: 5px;
-  }
+    .toolkits-item {
+        background: rgba(100, 100, 100, 0.4);
+        width: 40px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        border-radius: 5px;
+        margin: 5px;
+    }
 
-  .toolkits-item:active {
-    background: rgba(100, 100, 100, 0.9);
-    width: 40px;
-  }
+    .toolkits-item:active {
+        background: rgba(100, 100, 100, 0.9);
+        width: 40px;
+    }
 
-  .toolkits a {
-    color: #FFF;
-  }
-  .toolkits a svg{
-    width:30px;
-    height:30px;
-  }
+    .toolkits a {
+        color: #FFF;
+    }
+    .toolkits a svg{
+        width:30px;
+        height:30px;
+    }
 
+    iframe {
+        width: 100%;
+        aspect-ratio: 3/2;
+    }
 }
