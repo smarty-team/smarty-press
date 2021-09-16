@@ -25,6 +25,11 @@
   .toolkits {
     display: none;
   }
+
+  iframe {
+    width: 670px;
+    aspect-ratio: 3/2;
+  }
 }
 
 @media screen and (max-width: 768px) {
@@ -65,4 +70,8 @@
     height:30px;
   }
 
+  iframe {
+    width: 100%;
+    aspect-ratio: 3/2;
+  }
 }
