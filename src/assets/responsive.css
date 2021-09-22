@@ -4,7 +4,7 @@
     display: none;
   }
 }
-@media screen and (min-width: 768px) {
+@media screen and (min-width: 992px) {
   .markdown-catalogs {
     position: fixed;
     right: 10px;
@@ -32,7 +32,7 @@
   }
 }
 
-@media screen and (max-width: 768px) {
+@media screen and (max-width: 992px) {
   .markdown-catalogs {
     right: 10px;
     background: #FFF;
