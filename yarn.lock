@@ -290,6 +290,16 @@
     estree-walker "^2.0.2"
     source-map "^0.6.1"
 
+"@vue/compiler-core@3.2.18":
+  version "3.2.18"
+  resolved "https://registry.npmmirror.com/@vue/compiler-core/download/@vue/compiler-core-3.2.18.tgz?cache=0&sync_timestamp=1632514316736&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40vue%2Fcompiler-core%2Fdownload%2F%40vue%2Fcompiler-core-3.2.18.tgz#239f8ed2e8a95e87f6a6235a4798d8d29e5b4dd8"
+  integrity sha1-I5+O0uipXof2piNaR5jY0p5bTdg=
+  dependencies:
+    "@babel/parser" "^7.15.0"
+    "@vue/shared" "3.2.18"
+    estree-walker "^2.0.2"
+    source-map "^0.6.1"
+
 "@vue/compiler-dom@3.0.0":
   version "3.0.0"
   resolved "https://registry.nlark.com/@vue/compiler-dom/download/@vue/compiler-dom-3.0.0.tgz#4cbb48fcf1f852daef2babcf9953b681ac463526"
@@ -312,6 +322,14 @@
   dependencies:
     "@vue/compiler-core" "3.2.11"
     "@vue/shared" "3.2.11"
+
+"@vue/compiler-dom@3.2.18":
+  version "3.2.18"
+  resolved "https://registry.npmmirror.com/@vue/compiler-dom/download/@vue/compiler-dom-3.2.18.tgz?cache=0&sync_timestamp=1632514317226&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40vue%2Fcompiler-dom%2Fdownload%2F%40vue%2Fcompiler-dom-3.2.18.tgz#6bb3b0e318a7eb16c02eb42fefa96a58766c6730"
+  integrity sha1-a7Ow4xin6xbALrQv76lqWHZsZzA=
+  dependencies:
+    "@vue/compiler-core" "3.2.18"
+    "@vue/shared" "3.2.18"
 
 "@vue/compiler-sfc@^3.0.0":
   version "3.2.11"
@@ -372,6 +390,14 @@
   dependencies:
     "@vue/compiler-dom" "3.2.11"
     "@vue/shared" "3.2.11"
+
+"@vue/compiler-ssr@^3.2.18":
+  version "3.2.18"
+  resolved "https://registry.npmmirror.com/@vue/compiler-ssr/download/@vue/compiler-ssr-3.2.18.tgz?cache=0&sync_timestamp=1632514727783&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40vue%2Fcompiler-ssr%2Fdownload%2F%40vue%2Fcompiler-ssr-3.2.18.tgz#d2801ac5e7472d0b3079f553a4ab98def96e7be9"
+  integrity sha1-0oAaxedHLQswefVTpKuY3vlue+k=
+  dependencies:
+    "@vue/compiler-dom" "3.2.18"
+    "@vue/shared" "3.2.18"
 
 "@vue/reactivity@3.0.0":
   version "3.0.0"
@@ -449,6 +475,11 @@
   version "3.2.11"
   resolved "https://registry.nlark.com/@vue/shared/download/@vue/shared-3.2.11.tgz#01899f54949caf1ac241de397bd17069632574de"
   integrity sha1-AYmfVJScrxrCQd45e9FwaWMldN4=
+
+"@vue/shared@3.2.18":
+  version "3.2.18"
+  resolved "https://registry.npmmirror.com/@vue/shared/download/@vue/shared-3.2.18.tgz?cache=0&other_urls=https%3A%2F%2Fregistry.npmmirror.com%2F%40vue%2Fshared%2Fdownload%2F%40vue%2Fshared-3.2.18.tgz#f601356e14e455428e5db8281c966ba4c1bc3403"
+  integrity sha1-9gE1bhTkVUKOXbgoHJZrpMG8NAM=
 
 abbrev@1:
   version "1.1.1"
