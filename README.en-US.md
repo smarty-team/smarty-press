@@ -95,7 +95,7 @@ touch README.md
 ```bash
 yarn start
 ```
-**if install by global，you can skip this step**
+**if install by global，you should use the following command**
 ```bash
 spress start
 ```
@@ -104,7 +104,7 @@ spress start
 ```bash
 yarn build
 ```
-**if install by global，you can skip this step**
+**if install by global，you should use the following command**
 ```bash
 spress build
 ```
