@@ -49,6 +49,13 @@ yarn add vue@3.0.0
 
 请[参阅插件开发文档。](https://github.com/su37josephxia/smarty-press/tree/master/src/markdown/provider/__test_files__/)
 
+## 开发功能列表
+### 开发完成
+- [x] 展示DEMO
+
+### 待开发
+- [ ] 菜单自由配置功能
+
 
 # 主题库
 
