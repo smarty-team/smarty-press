@@ -52,4 +52,59 @@ http://zhongce.sina.com.cn/article/view/18867
 
 ## Documentation
 
-we are still working on refining it and contributions are welcome!
+### Usage
+* Step. 1 Create and change into a new directory.
+```bash
+mkdir hello-smarty-press && cd hello-smarty-press
+```
+
+* Step. 2 Initialize with your preferred package manager.
+```bash
+yarn init
+```
+
+* Step. 3 Install `smarty-press` locally (**if you already install by global, can skip this step**)
+```bash
+yarn add --dev smarty-press
+```
+
+* Step. 4 create `README.md` file
+```bash
+touch README.md
+```
+
+* Step. 5 write content to `README.md`
+```markdown
+# How to use SmartyPress
+## Install
+
+## Usage
+```
+
+* Step. 6 Add some scripts to package.json (**if install by global，you can skip this step**)
+```json
+{
+  "scripts": {
+    "start": "spress start",
+    "build": "spress build"
+  }
+}
+```
+
+* Step. 7 start local server
+```bash
+yarn start
+```
+**if install by global，you should use the following command**
+```bash
+spress start
+```
+
+* Step. 8 building The Docs
+```bash
+yarn build
+```
+**if install by global，you should use the following command**
+```bash
+spress build
+```
