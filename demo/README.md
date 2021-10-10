@@ -1,4 +1,4 @@
-# 欢迎使用 SMARTY-PRESS 666
+# 欢迎使用 SMARTY-PRESS
 
 
 ## 简单说明
