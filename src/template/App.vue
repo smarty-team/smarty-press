@@ -1,6 +1,6 @@
 <template>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <link rel="stylesheet" href="/assets/adminlte.min.css" />
   <link rel="stylesheet" :href="skinPath" />
   <link rel="stylesheet" href="/assets/responsive.css" />
@@ -178,8 +178,7 @@
     </div>
   </body>
 
-  <script src="/assets/jquery.min.js"></script>
+  <script src="https://cdn.bootcdn.net/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="/assets/adminlte.min.js"></script>
 </template>
-<script>
-</script>
+<script></script>
