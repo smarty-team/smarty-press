@@ -17,10 +17,13 @@ function analysisTitle(body) {
     last: null
   }
   const ret = arr.map(v => {
-    if (v.startsWith('## ')) {
+    if (
+      v.startsWith('## ') ||
+      (beforTag === '' && v.startsWith('### '))
+    ) {
       number.h1 += 1
       let serialNumber = customChieseNumber(number.h1)
-      v = v.replace('## ', `## ${serialNumber}、`)
+      v = v.replace(v.startsWith('## ') ? '## ' : '### ', `## ${serialNumber}、`)
       beforTag = '##'
 
       // 保存目录
