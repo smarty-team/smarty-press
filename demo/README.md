@@ -37,6 +37,10 @@
 
 ### 支持多级目录显示
 
+
+### assets文件拷贝
+自动拷贝assets文件中的图片内容
+
 ## 插件开发说明
 
 查看[插件开发说明](https://github.com/su37josephxia/smarty-press/tree/master/src/markdown/provider/__test_files__/)
