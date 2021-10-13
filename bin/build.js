@@ -3,7 +3,7 @@ const ssr = require("../src/ssr");
 const fs = require("fs");
 const { getFolder } = require("../src/menu");
 const provider = require("../src/markdown");
-const glob = require('glob')
+const glob = require("glob");
 
 // 替换 a href=**/README.md /index.html
 const replaceKeyword = (body) => {
@@ -93,16 +93,23 @@ function copyDir(from, to) {
  * @param {*} sourcePath source文件位置
  * @param {*} param1
  */
-function copyAssets(sourcePath, { assetsPath, distPath }) {
+function copyAssets(sourcePath, { assetsPath, distPath, resolvePath }) {
   // 复制src文件到dist
   const from = assetsPath(sourcePath);
   const to = distPath(sourcePath);
-  console.log("复制assets", from, to);
+
+  console.log("复制模板中的assets文件:");
   copyDir(from, to);
-
+  console.log("复制doc中的assets文件:");
   // 复制markdown文件到dist
-  const 
-
+  glob.sync(`${resolvePath("./")}/**/assets/*`).forEach((item) => {
+    // 计算copy目标
+    const relative = path.relative(resolvePath("./"), item);
+    const dist = path.resolve(distPath("./"), "./" + relative);
+    const dirPath = path.dirname(dist);
+    !fs.existsSync(dirPath) && fs.mkdirSync(dirPath);
+    fs.copyFileSync(item, dist);
+  });
 }
 
 module.exports = async function (
@@ -139,8 +146,6 @@ module.exports = async function (
 
   // 复制源码仓库中的assets文件
   copyAssets("assets", provider);
-
-
 
   // 生成静态
   console.log("生成静态HTML文件:");
