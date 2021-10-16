@@ -27,10 +27,15 @@ module.exports.startDev = async (
   // 静态服务
   // app.use(KoaStatic('./assets'))
   app.use(async (ctx, next) => {
-    // console.log('ctx.url', ctx.url)
-    if (ctx.url.startsWith("/assets")) {
+    if (ctx.url.indexOf("/assets") > -1) {
       try {
-        const buffer = fs.readFileSync(path.resolve(__dirname, "./" + ctx.url));
+        // 判断是否存在此文件
+        let assetsPath = path.resolve(__dirname, "./" + ctx.url)
+        if(!fs.existsSync(assetsPath)) {
+            assetsPath = path.resolve(options.root, "./" + ctx.url)
+        }
+        const buffer = fs.readFileSync(assetsPath);
+        
         ctx.type = path.extname(ctx.url).slice(1);
         ctx.body = buffer;
       } catch (e) {
