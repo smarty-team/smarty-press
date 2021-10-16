@@ -7,7 +7,7 @@
     "spress": "./bin/index.js"
   },
   "scripts": {
-    "start": "node bin/index.js start test",
+    "start": "node bin/index.js start demo",
     "build": "node bin/index.js build demo",
     "dev": "nodemon index.js",
     "test": "jest --watch"
