@@ -7,40 +7,63 @@ module.exports = async ({ fileNode }, next) => {
 
 function analysisTitle(body) {
   const arr = body.split('\n')
-  let number = {
-    h1: 0,
-    h2: 0,
-  }
-  let beforTag = ''
+  const isHeadingReg = /^#+\x20/
+
+  let numbers = {}
+  let previousLevel = 1
   let contentsData = {
     list: [],
     last: null
   }
-  const ret = arr.map(v => {
-    if (
-      v.startsWith('## ') ||
-      (beforTag === '' && v.startsWith('### '))
-    ) {
-      number.h1 += 1
-      let serialNumber = customChieseNumber(number.h1)
-      v = v.replace(v.startsWith('## ') ? '## ' : '### ', `## ${serialNumber}、`)
-      beforTag = '##'
-
-      // 保存目录
-      contentsData.list.push(createCatalogNode(v))
-      contentsData.last = contentsData.list[contentsData.list.length - 1].children
-    } else if (v.startsWith('### ')) {
-      if (beforTag === '###') {
-        number.h2 += 1
-      } else {
-        number.h2 = 1
-      }
-      v = v.replace('### ', `### ${number.h2}. `)
-      beforTag = '###'
-      contentsData.last.push(createCatalogNode(v)) // 保存目录
+  
+  const ret = arr.map((line, index, lines) => {
+    if (!isHeadingReg.test(line)) {
+      return line
     }
-    return v
+
+    let level = getHeadingLevel(line);
+    if (level === 1) {
+      return line
+    }
+
+    const diff = level - previousLevel;
+    
+    if (diff > 1) {
+      level -= diff - 1
+    }
+    
+    const levelKey = `h${level}`
+    
+    if (diff < 0) {
+      Object.keys(numbers)
+        .filter(key => Number(key.split('')[1]) > level)
+        .forEach(key => {
+            numbers[key] = 0
+        })
+    }
+    if (typeof numbers[levelKey] === 'undefined') {
+      numbers[levelKey] = 0
+    }
+    
+    numbers[levelKey] += 1
+    
+    const serialNumber = level === 2
+      ? customChieseNumber(numbers[levelKey]) + '、'
+      : numbers[levelKey] + '. '
+    line = line.replace(isHeadingReg, `${'#'.repeat(level)} ${serialNumber}`)
+    
+    if (level === 2) {
+        contentsData.list.push(createCatalogNode(line))
+        contentsData.last = contentsData.list[contentsData.list.length - 1].children
+    } else {
+        contentsData.last.push(createCatalogNode(line))
+    }
+
+    previousLevel = level
+
+    return line
   })
+
   return {
     list: contentsData.list,
     body: ret.join('\n')
@@ -108,4 +131,9 @@ function createCatalogNode(title) {
     children: [],
     hash: title
   }
+}
+
+function getHeadingLevel(line) {
+  const head = line.split(' ')
+  return head[0].length
 }
