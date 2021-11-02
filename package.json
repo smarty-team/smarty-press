@@ -9,7 +9,8 @@
   "scripts": {
     "start": "node bin/index.js start demo",
     "build": "node bin/index.js build demo",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "test": "jest --watch"
   },
   "keywords": [],
   "author": "",
@@ -39,6 +40,7 @@
   },
   "devDependencies": {
     "express": "^4.17.1",
+    "jest": "^27.2.5",
     "vite": "^0.20.0"
   }
 }
